@@ -1,0 +1,159 @@
+<?php
+require_once "../Back_End/db.php"; 
+
+set_time_limit(0); 
+ini_set('memory_limit', '512M');
+
+$fichiers = [
+    'dump(11).csv' => 'F11',
+    'dump(13).csv' => 'F13'
+];
+
+try {
+    $conn->set_charset("utf8mb4");
+
+    // --- FONCTIONS DE NETTOYAGE ---
+    function cleanValue($v) {
+        $v = trim($v, " \t\n\r\0\x0B");
+        return ($v === '\N' || $v === '') ? null : $v;
+    }
+
+    function decodeText($data) {
+        if ($data === null) return null;
+        $enc = mb_detect_encoding($data, ['UTF-8', 'ISO-8859-1', 'Windows-1252'], true);
+        $clean = mb_convert_encoding($data, "UTF-8", $enc ? $enc : "Windows-1252");
+        return strip_tags($clean);
+    }
+
+    function formatDateCustom($date_brute) {
+        if (!$date_brute) return null;
+        $d = DateTime::createFromFormat('n/j/Y', $date_brute);
+        if ($d) return $d->format('Y-m-d');
+        // fallback pour format Y-m-d
+        if (preg_match('/^\d{4}-\d{2}-\d{2}/', $date_brute)) return substr($date_brute, 0, 10);
+        return null;
+    }
+
+    // --- LOGIQUE D'IMPORTATION ---
+
+    foreach ($fichiers as $nomFichier => $type) {
+        if (!file_exists($nomFichier)) continue;
+
+        $handle = fopen($nomFichier, "r");
+        fgetcsv($handle); // Ignorer l'entête
+        $conn->begin_transaction();
+        
+        // Tableau pour suivre les demandes déjà traitées dans ce fichier
+        $demandes_traitees = [];
+        $total_lus = 0;
+
+        echo "Traitement de $nomFichier...<br>";
+
+        while (($row = fgetcsv($handle, 0, ",")) !== FALSE) {
+            $total_lus++;
+            foreach ($row as $k => $v) { $row[$k] = cleanValue($v); }
+
+            if ($type == 'F11') {
+                $dem_id    = (int)$row[0];
+                $dem_ref   = decodeText($row[1]);
+                $sect_id   = (int)$row[9];
+                $sect_nom  = decodeText($row[10]);
+                $date_crea = formatDateCustom($row[15]);
+                $echant_id = (int)$row[17];
+                $conf      = (strtolower($row[19]) == 'oui') ? 'Conforme' : 'Non Conf.';
+                $date_rec  = formatDateCustom($row[22]);
+                $statut    = decodeText($row[20]);
+
+                // 1. Unicité Secteur
+                $stmt = $conn->prepare("INSERT IGNORE INTO secteurs (id_secteur, nom_secteur) VALUES (?, ?)");
+                $stmt->bind_param("is", $sect_id, $sect_nom);
+                $stmt->execute();
+
+                // 2. Unicité Demande (On ne l'insère qu'une seule fois par script)
+                if (!isset($demandes_traitees[$dem_id])) {
+                    $stmt = $conn->prepare("INSERT INTO demande_analyse (id_demande, date_creation, id_secteur) 
+                                            VALUES (?, ?, ?) 
+                                            ON DUPLICATE KEY UPDATE date_creation=VALUES(date_creation)");
+                    $stmt->bind_param("isi", $dem_id, $date_crea, $sect_id);
+                    $stmt->execute();
+                    $demandes_traitees[$dem_id] = true;
+                }
+
+                // 3. Échantillon (L'échantillon peut être lié à plusieurs lignes d'analyses)
+                $stmt = $conn->prepare("INSERT INTO echantillons (id_echantillon, id_demande, est_conforme, date_reception) 
+                                        VALUES (?, ?, ?, ?) 
+                                        ON DUPLICATE KEY UPDATE est_conforme=VALUES(est_conforme)");
+                $stmt->bind_param("iiss", $echant_id, $dem_id, $conf, $date_rec);
+                $stmt->execute();
+
+            } else {
+                // --- MAPPING DUMP 13 ---
+                $ordre_cle   = $row[0];
+                $ordre_ref   = $row[2];
+                $dem_id      = (int)$row[3];
+                $cli_id      = (int)$row[4];
+                $cli_nom     = decodeText($row[5]);
+                $dem_ref     = decodeText($row[6]);
+                $date_dem    = formatDateCustom($row[7]);
+                $ana_nom     = decodeText($row[9]);
+                $echant_id   = (int)$row[12];
+                $date_rec    = formatDateCustom($row[15]);
+                $lab_id      = (int)$row[16];
+                $fiche_id    = (int)$row[17];
+                $sect_id     = (int)$row[18];
+                $sect_nom    = decodeText($row[19]);
+                $lab_nom     = decodeText($row[20]);
+                $statut      = decodeText($row[22]);
+                $conf        = decodeText($row[24]);
+                $resultat    = decodeText($row[25]);
+
+                // Insertion Secteur & Utilisateur
+                $stmt = $conn->prepare("INSERT IGNORE INTO secteurs (id_secteur, nom_secteur) VALUES (?, ?)");
+                $stmt->bind_param("is", $sect_id, $sect_nom); $stmt->execute();
+
+                if ($lab_id) {
+                    $stmt = $conn->prepare("INSERT IGNORE INTO utilisateurs (id_utilisateur, nom_complet) VALUES (?, ?)");
+                    $stmt->bind_param("is", $lab_id, $lab_nom); $stmt->execute();
+                }
+
+                // Unicité Demande
+                if (!isset($demandes_traitees[$dem_id])) {
+                    $stmt = $conn->prepare("INSERT INTO demande_analyse (id_demande, date_creation, id_secteur) 
+                                            VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE id_secteur=VALUES(id_secteur)");
+                    $stmt->bind_param("isi", $dem_id, $date_dem, $sect_id);
+                    $stmt->execute();
+                    $demandes_traitees[$dem_id] = true;
+                }
+
+                // Echantillon
+                $stmt = $conn->prepare("INSERT INTO echantillons (id_echantillon, id_demande, est_conforme, date_reception) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE est_conforme=VALUES(est_conforme)");
+                $stmt->bind_param("iiss", $echant_id, $dem_id, $conf, $date_rec); $stmt->execute();
+
+                // Fiche Paillasse
+                if ($fiche_id) {
+                    $stmt = $conn->prepare("INSERT INTO fiches_paillasse (id_fiche, id_demande, id_laborantin, id_secteur, statut) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE statut=VALUES(statut)");
+                    $stmt->bind_param("iiiis", $fiche_id, $dem_id, $lab_id, $sect_id, $statut); $stmt->execute();
+                }
+
+                // Table Ordres (Ici on insère tout car ordre_cle est l'unique)
+                $sql_ord = "INSERT INTO ordres_analyses (ordre_cle, ordre_reference, client_id, client_nom, demande_analyse, analyse_nom, laboratin, fiche_paillasse_id, echontillon, resultat, date_demande, conformite_libelle, statut) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE resultat = VALUES(resultat), statut = VALUES(statut)";
+                $stmt_ord = $conn->prepare($sql_ord);
+                $stmt_ord->bind_param("ssissssiissss", $ordre_cle, $ordre_ref, $cli_id, $cli_nom, $dem_ref, $ana_nom, $lab_nom, $fiche_id, $echant_id, $resultat, $date_dem, $conf, $statut);
+                $stmt_ord->execute();
+            }
+
+            if ($total_lus % 1000 == 0) {
+                $conn->commit();
+                $conn->begin_transaction();
+            }
+        }
+        $conn->commit();
+        fclose($handle);
+    }
+    echo "<strong>Importation terminée. Les demandes dupliquées ont été filtrées et rendues uniques.</strong>";
+
+} catch (Exception $e) {
+    if (isset($conn)) $conn->rollback();
+    echo "ERREUR : " . $e->getMessage();
+}
+?>

@@ -1,0 +1,4262 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "↺ Réinitialiser les filtres",
+      "tooltip": "Remet tous les filtres à Tous",
+      "type": "link",
+      "url": "/d/pfe-labo-enh-v12"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Vue actuelle avec filtres",
+      "tooltip": "Conserver les filtres actifs dans l’URL",
+      "type": "link",
+      "url": "/d/pfe-labo-enh-v12"
+    }
+  ],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "panels": [],
+      "title": "1. Synthèse prédictive",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Erreur moyenne historique sur HOLDOUT, en jours.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "d",
+          "min": 0,
+          "max": 120
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
+      "id": 2,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "minVizWidth": 75,
+        "minVizHeight": 75
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT erreur_moyenne FROM vue_pred_kpis_principaux;",
+          "refId": "A"
+        }
+      ],
+      "title": "Erreur moyenne MAE",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Part des demandes avec une erreur élevée.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "id": 3,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "minVizWidth": 75,
+        "minVizHeight": 75
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT taux_erreur_elevee FROM vue_pred_kpis_principaux;",
+          "refId": "A"
+        }
+      ],
+      "title": "Taux d'erreurs élevées",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Retards réels non détectés par le modèle.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
+      "id": 4,
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "displayMode": "gradient",
+        "showUnfilled": true,
+        "valueMode": "color",
+        "namePlacement": "auto",
+        "sizing": "auto",
+        "minVizWidth": 16,
+        "minVizHeight": 10
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT taux_retards_non_detectes FROM vue_pred_kpis_principaux;",
+          "refId": "A"
+        }
+      ],
+      "title": "Retards non détectés",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Taux de demandes prédites en retard alors que le retard réel n’a pas eu lieu. Plus ce taux est bas, mieux c’est.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 20
+              },
+              {
+                "color": "orange",
+                "value": 40
+              },
+              {
+                "color": "red",
+                "value": 60
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "id": 5,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "minVizWidth": 75,
+        "minVizHeight": 75
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT COALESCE(taux_fausses_alertes, 0) AS taux_fausses_alertes FROM vue_pred_kpis_principaux;",
+          "refId": "A"
+        }
+      ],
+      "title": "Fausses alertes corrigées",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Demandes EN_COURS classées Critique.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "orange",
+                "value": 25
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          },
+          "min": 0
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "id": 6,
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "displayMode": "gradient",
+        "showUnfilled": true,
+        "valueMode": "color",
+        "namePlacement": "auto",
+        "sizing": "auto",
+        "minVizWidth": 16,
+        "minVizHeight": 10
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT nb_risque_critique FROM vue_pred_kpis_en_cours;",
+          "refId": "A"
+        }
+      ],
+      "title": "Demandes critiques",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Demandes EN_COURS classées Élevé ou Moyen.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "orange",
+                "value": 25
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          },
+          "min": 0
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "id": 7,
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "displayMode": "gradient",
+        "showUnfilled": true,
+        "valueMode": "color",
+        "namePlacement": "auto",
+        "sizing": "auto",
+        "minVizWidth": 16,
+        "minVizHeight": 10
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT nb_demandes_a_surveiller FROM vue_pred_kpis_en_cours;",
+          "refId": "A"
+        }
+      ],
+      "title": "Demandes à surveiller",
+      "type": "bargauge"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 8,
+      "panels": [],
+      "title": "2. Demandes en cours : risque opérationnel",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Donut filtrable par secteur, produit, risque et étape.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 40
+              },
+              {
+                "color": "orange",
+                "value": 65
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 6
+      },
+      "id": 9,
+      "options": {
+        "pieType": "donut",
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "reduceOptions": {
+          "values": true,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "sort": "desc"
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    COALESCE(niveau_risque, 'Inconnu') AS risque,\n    COUNT(*) AS nb_demandes\nFROM vue_pred_demandes_risque_en_cours\nGROUP BY COALESCE(niveau_risque, 'Inconnu')\nORDER BY nb_demandes DESC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Répartition par niveau de risque",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Barres horizontales, filtrables et cliquables vers le détail secteur.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 72,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "orange",
+                "value": 25
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "secteur"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Filtrer ce dashboard par secteur",
+                    "url": "/d/pfe-labo-enh-v12?var-secteur=${__data.fields.secteur}&var-produit=%25&var-risque=%25&var-stage=%25&var-demande=%25&var-type_erreur=%25&var-analyse=%25&var-modele=%25&var-top3_etape=%25&var-top3_modele=%25",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 6
+      },
+      "id": 10,
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0,
+        "showValue": "always",
+        "stacking": "none",
+        "groupWidth": 0.72,
+        "barWidth": 0.82,
+        "barRadius": 0.12,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    COALESCE(nom_secteur, 'Secteur non renseigne') AS secteur,\n    COUNT(*) AS nb_demandes\nFROM vue_pred_demandes_risque_en_cours\nGROUP BY COALESCE(nom_secteur, 'Secteur non renseigne')\nORDER BY nb_demandes DESC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Demandes en cours par secteur",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Top produits filtrable ; clic possible vers le détail produit.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 72,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "orange",
+                "value": 25
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "produit"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Filtrer ce dashboard par produit",
+                    "url": "/d/pfe-labo-enh-v12?var-produit=${__data.fields.produit}&var-secteur=%25&var-risque=%25&var-stage=%25&var-demande=%25&var-type_erreur=%25&var-analyse=%25&var-modele=%25&var-top3_etape=%25&var-top3_modele=%25",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 6
+      },
+      "id": 11,
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0,
+        "showValue": "always",
+        "stacking": "none",
+        "groupWidth": 0.72,
+        "barWidth": 0.82,
+        "barRadius": 0.12,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    COALESCE(nom_produit, 'Produit non renseigne') AS produit,\n    COUNT(*) AS nb_demandes\nFROM vue_pred_demandes_risque_en_cours\nGROUP BY COALESCE(nom_produit, 'Produit non renseigne')\nORDER BY nb_demandes DESC\nLIMIT 15;",
+          "refId": "A"
+        }
+      ],
+      "title": "Demandes en cours par produit",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Table principale filtrée, avec liens vers le détail demande.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "niveau_risque"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "Critique": {
+                        "color": "dark-red",
+                        "index": 0,
+                        "text": "Critique"
+                      },
+                      "Eleve": {
+                        "color": "orange",
+                        "index": 1,
+                        "text": "Élevé"
+                      },
+                      "Élevé": {
+                        "color": "orange",
+                        "index": 2,
+                        "text": "Élevé"
+                      },
+                      "Moyen": {
+                        "color": "yellow",
+                        "index": 3,
+                        "text": "Moyen"
+                      },
+                      "Faible": {
+                        "color": "green",
+                        "index": 4,
+                        "text": "Faible"
+                      },
+                      "Inconnu": {
+                        "color": "gray",
+                        "index": 5,
+                        "text": "Inconnu"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "jours_retard_predit"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 30
+                    },
+                    {
+                      "color": "orange",
+                      "value": 60
+                    },
+                    {
+                      "color": "red",
+                      "value": 90
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ref_demande"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Filtrer ce dashboard par demande",
+                    "url": "/d/pfe-labo-enh-v12?var-demande=${__data.fields.ref_demande}&var-secteur=%25&var-produit=%25&var-risque=%25&var-stage=%25&var-type_erreur=%25&var-analyse=%25&var-modele=%25&var-top3_etape=%25&var-top3_modele=%25",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 12,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    ref_demande,\n    client_name,\n    nom_secteur,\n    nom_produit,\n    stage_prediction,\n    delai_predit_jours,\n    jours_restants_predits,\n    jours_retard_predit,\n    niveau_risque,\n    diagnostic_risque\nFROM vue_pred_demandes_risque_en_cours\nORDER BY jours_retard_predit DESC\nLIMIT 50;",
+          "refId": "A"
+        }
+      ],
+      "title": "Détail des demandes en cours",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 13,
+      "panels": [],
+      "title": "3. Évaluation historique des erreurs",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Répartition filtrée des niveaux d'erreur.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 75,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "orange",
+                "value": 25
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 23
+      },
+      "id": 14,
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0,
+        "showValue": "always",
+        "stacking": "none",
+        "groupWidth": 0.7,
+        "barWidth": 0.9,
+        "barRadius": 0.08,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    COALESCE(criticite_erreur, niveau_erreur, 'Inconnu') AS niveau_erreur,\n    COUNT(*) AS nb_demandes\nFROM vue_dash_pred_erreurs_detail\nGROUP BY COALESCE(criticite_erreur, niveau_erreur, 'Inconnu')\nORDER BY nb_demandes DESC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Niveaux d'erreur",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Donut de typologie des erreurs, filtré par secteur, produit et type d'erreur.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 23
+      },
+      "id": 15,
+      "options": {
+        "pieType": "donut",
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "reduceOptions": {
+          "values": true,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "sort": "desc"
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    COALESCE(type_erreur, 'Inconnu') AS type_erreur,\n    COUNT(*) AS nb_demandes\nFROM vue_dash_pred_erreurs_detail\nGROUP BY COALESCE(type_erreur, 'Inconnu')\nORDER BY nb_demandes DESC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Sous-estimation vs surestimation",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Vue croisée filtrable entre diagnostic retard et type d'erreur.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 75,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "orange",
+                "value": 25
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 23
+      },
+      "id": 16,
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0,
+        "showValue": "always",
+        "stacking": "normal",
+        "groupWidth": 0.7,
+        "barWidth": 0.9,
+        "barRadius": 0.08,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    COALESCE(diagnostic_retard, 'Inconnu') AS diagnostic_retard,\n    COUNT(*) AS nb_demandes\nFROM vue_dash_pred_erreurs_detail\nGROUP BY COALESCE(diagnostic_retard, 'Inconnu')\nORDER BY nb_demandes DESC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Diagnostic des retards",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Table des erreurs historiques majeures, filtrée par secteur, produit et type d'erreur.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "erreur_absolue"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 30
+                    },
+                    {
+                      "color": "orange",
+                      "value": 60
+                    },
+                    {
+                      "color": "red",
+                      "value": 90
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ref_demande"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Filtrer ce dashboard par demande",
+                    "url": "/d/pfe-labo-design-stable-v5?var-demande=${__data.fields.ref_demande}&var-secteur=%25&var-produit=%25&var-risque=%25&var-stage=%25&var-type_erreur=%25&var-analyse=%25&var-modele=%25",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 31
+      },
+      "id": 17,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    rang_erreur,\n    ref_demande,\n    client_name,\n    nom_secteur,\n    nom_produit,\n    noms_analyse,\n    delai_reel_jours,\n    delai_predit_corrige,\n    erreur_absolue,\n    type_erreur,\n    diagnostic_retard\nFROM vue_pred_demandes_top_erreurs\nORDER BY rang_erreur;",
+          "refId": "A"
+        }
+      ],
+      "title": "Top demandes avec erreurs historiques",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 39
+      },
+      "id": 18,
+      "panels": [],
+      "title": "4. Analyses prédictivement sensibles",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Volume historique par analyse, filtrable par analyse.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 72,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "orange",
+                "value": 25
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "analyse"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Filtrer ce dashboard par analyse",
+                    "url": "/d/pfe-labo-enh-v12?var-analyse=${__data.fields.analyse}&var-secteur=%25&var-produit=%25&var-risque=%25&var-stage=%25&var-demande=%25&var-type_erreur=%25&var-modele=%25&var-top3_etape=%25&var-top3_modele=%25",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 40
+      },
+      "id": 19,
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0,
+        "showValue": "always",
+        "stacking": "none",
+        "groupWidth": 0.72,
+        "barWidth": 0.82,
+        "barRadius": 0.12,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    nom_analyse AS analyse,\n    nb_demandes_historiques AS nb_demandes\nFROM vue_pred_analyses_top_volume\nWHERE COALESCE(nom_analyse, '') LIKE ${analyse:sqlstring}\nORDER BY nb_demandes_historiques DESC\nLIMIT 15;",
+          "refId": "A"
+        }
+      ],
+      "title": "Top analyses par volume historique",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Bar gauge pour repérer immédiatement les analyses les plus sensibles.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 40
+              },
+              {
+                "color": "orange",
+                "value": 65
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "min": 0,
+          "max": 100
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "analyse"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Filtrer ce dashboard par analyse",
+                    "url": "/d/pfe-labo-enh-v12?var-analyse=${__data.fields.analyse}&var-secteur=%25&var-produit=%25&var-risque=%25&var-stage=%25&var-demande=%25&var-type_erreur=%25&var-modele=%25&var-top3_etape=%25&var-top3_modele=%25",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 40
+      },
+      "id": 20,
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "displayMode": "gradient",
+        "showUnfilled": true,
+        "valueMode": "color",
+        "namePlacement": "left",
+        "sizing": "auto",
+        "minVizWidth": 16,
+        "minVizHeight": 10
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    nom_analyse AS analyse,\n    score_criticite_analyse AS score_criticite\nFROM vue_pred_analyses_top_sensibles\nWHERE COALESCE(nom_analyse, '') LIKE ${analyse:sqlstring}\nORDER BY score_criticite_analyse DESC\nLIMIT 15;",
+          "refId": "A"
+        }
+      ],
+      "title": "Score de criticité des analyses",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Top analyses où le modèle sous-détecte les retards.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 72,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "orange",
+                "value": 25
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "analyse"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Filtrer ce dashboard par analyse",
+                    "url": "/d/pfe-labo-enh-v12?var-analyse=${__data.fields.analyse}&var-secteur=%25&var-produit=%25&var-risque=%25&var-stage=%25&var-demande=%25&var-type_erreur=%25&var-modele=%25&var-top3_etape=%25&var-top3_modele=%25",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 40
+      },
+      "id": 21,
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0,
+        "showValue": "always",
+        "stacking": "none",
+        "groupWidth": 0.72,
+        "barWidth": 0.82,
+        "barRadius": 0.12,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    nom_analyse AS analyse,\n    nb_retards_non_detectes\nFROM vue_pred_analyses_top_sensibles\nWHERE COALESCE(nom_analyse, '') LIKE ${analyse:sqlstring}\nORDER BY nb_retards_non_detectes DESC, score_criticite_analyse DESC\nLIMIT 15;",
+          "refId": "A"
+        }
+      ],
+      "title": "Retards non détectés par analyse",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Table filtrée par analyse avec scores, retards et criticité. La colonne niveau_criticite_analyse est maintenant colorée selon le risque.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "score_criticite_analyse"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 40
+                    },
+                    {
+                      "color": "orange",
+                      "value": 65
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "nom_analyse"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Filtrer ce dashboard par analyse",
+                    "url": "/d/pfe-labo-enh-v12?var-analyse=${__data.fields.nom_analyse}&var-secteur=%25&var-produit=%25&var-risque=%25&var-stage=%25&var-demande=%25&var-type_erreur=%25&var-modele=%25&var-top3_etape=%25&var-top3_modele=%25",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "niveau_criticite_analyse"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "Critique": {
+                        "color": "dark-red",
+                        "index": 0,
+                        "text": "Critique"
+                      },
+                      "critique": {
+                        "color": "dark-red",
+                        "index": 1,
+                        "text": "Critique"
+                      },
+                      "Élevé": {
+                        "color": "orange",
+                        "index": 2,
+                        "text": "Élevé"
+                      },
+                      "Eleve": {
+                        "color": "orange",
+                        "index": 3,
+                        "text": "Élevé"
+                      },
+                      "Elevé": {
+                        "color": "orange",
+                        "index": 4,
+                        "text": "Élevé"
+                      },
+                      "Moyen": {
+                        "color": "yellow",
+                        "index": 5,
+                        "text": "Moyen"
+                      },
+                      "A surveiller": {
+                        "color": "orange",
+                        "index": 6,
+                        "text": "À surveiller"
+                      },
+                      "À surveiller": {
+                        "color": "orange",
+                        "index": 7,
+                        "text": "À surveiller"
+                      },
+                      "Faible": {
+                        "color": "green",
+                        "index": 8,
+                        "text": "Faible"
+                      },
+                      "Normal": {
+                        "color": "green",
+                        "index": 9,
+                        "text": "Normal"
+                      },
+                      "Inconnu": {
+                        "color": "gray",
+                        "index": 10,
+                        "text": "Inconnu"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 48
+      },
+      "id": 22,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    nom_analyse,\n    nb_demandes_historiques,\n    erreur_moyenne,\n    nb_retards_non_detectes,\n    taux_retard_reel,\n    score_criticite_analyse,\n    niveau_criticite_analyse\nFROM vue_pred_analyses_top_sensibles\nWHERE COALESCE(nom_analyse, '') LIKE ${analyse:sqlstring}\nORDER BY rang_sensibilite;",
+          "refId": "A"
+        }
+      ],
+      "title": "Synthèse drill-down des analyses sensibles",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 56
+      },
+      "id": 23,
+      "panels": [],
+      "title": "5. Axes métier sensibles",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Barres horizontales avec seuils de sensibilité.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 72,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 40
+              },
+              {
+                "color": "orange",
+                "value": 65
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 57
+      },
+      "id": 24,
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0,
+        "showValue": "always",
+        "stacking": "none",
+        "groupWidth": 0.72,
+        "barWidth": 0.82,
+        "barRadius": 0.12,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    element AS produit,\n    score_sensibilite\nFROM vue_pred_axes_sensibles_top\nWHERE type_element = 'Produit fini'\nORDER BY score_sensibilite DESC\nLIMIT 10;",
+          "refId": "A"
+        }
+      ],
+      "title": "Produits finis sensibles",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Barres horizontales avec seuils de sensibilité.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 72,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 40
+              },
+              {
+                "color": "orange",
+                "value": 65
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 57
+      },
+      "id": 25,
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0,
+        "showValue": "always",
+        "stacking": "none",
+        "groupWidth": 0.72,
+        "barWidth": 0.82,
+        "barRadius": 0.12,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    sous_element AS code_ref_labo,\n    score_sensibilite\nFROM vue_pred_axes_sensibles_top\nWHERE type_element = 'Labo / reference labo'\nORDER BY score_sensibilite DESC\nLIMIT 10;",
+          "refId": "A"
+        }
+      ],
+      "title": "Références labo sensibles",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Barres horizontales avec seuils de sensibilité.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 72,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 40
+              },
+              {
+                "color": "orange",
+                "value": 65
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 57
+      },
+      "id": 26,
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0,
+        "showValue": "always",
+        "stacking": "none",
+        "groupWidth": 0.72,
+        "barWidth": 0.82,
+        "barRadius": 0.12,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    element AS secteur,\n    score_sensibilite\nFROM vue_pred_axes_sensibles_top\nWHERE type_element = 'Secteur'\nORDER BY score_sensibilite DESC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Secteurs sensibles",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Table Éléments métier filtrable par listes dropdown stables; niveau_sensibilite coloré.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "score_sensibilite"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 40
+                    },
+                    {
+                      "color": "orange",
+                      "value": 65
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "type_element"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "element"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 190
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sous_element"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 170
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "nb_demandes"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "erreur_moyenne"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "taux_retard_reel"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "niveau_sensibilite"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "Critique": {
+                        "color": "dark-red",
+                        "index": 0,
+                        "text": "Critique"
+                      },
+                      "A surveiller": {
+                        "color": "orange",
+                        "index": 1,
+                        "text": "À surveiller"
+                      },
+                      "À surveiller": {
+                        "color": "orange",
+                        "index": 2,
+                        "text": "À surveiller"
+                      },
+                      "Eleve": {
+                        "color": "orange",
+                        "index": 3,
+                        "text": "Élevé"
+                      },
+                      "Élevé": {
+                        "color": "orange",
+                        "index": 4,
+                        "text": "Élevé"
+                      },
+                      "Moyen": {
+                        "color": "yellow",
+                        "index": 5,
+                        "text": "Moyen"
+                      },
+                      "Faible": {
+                        "color": "green",
+                        "index": 6,
+                        "text": "Faible"
+                      },
+                      "Normal": {
+                        "color": "green",
+                        "index": 7,
+                        "text": "Normal"
+                      },
+                      "Inconnu": {
+                        "color": "gray",
+                        "index": 8,
+                        "text": "Inconnu"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 165
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 65
+      },
+      "id": 27,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    type_element,\n    element,\n    sous_element,\n    nb_demandes,\n    erreur_moyenne,\n    taux_retard_reel,\n    score_sensibilite,\n    niveau_sensibilite\nFROM vue_pred_axes_sensibles_top\nWHERE COALESCE(type_element, 'Inconnu') LIKE ${metier_type:sqlstring}\n  AND COALESCE(niveau_sensibilite, 'Inconnu') LIKE ${metier_niveau:sqlstring}\nORDER BY score_sensibilite DESC\nLIMIT 50;",
+          "refId": "A"
+        }
+      ],
+      "title": "Éléments métier les plus sensibles",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 73
+      },
+      "id": 28,
+      "panels": [],
+      "title": "6. Tendances temporelles",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Courbe temporelle construite à partir du mois de demande.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 2,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            },
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "barAlignment": 0,
+            "spanNulls": false,
+            "showPoints": "auto",
+            "pointSize": 5
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 40
+              },
+              {
+                "color": "orange",
+                "value": 65
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 74
+      },
+      "id": 29,
+      "options": {
+        "tooltip": {
+          "mode": "single",
+          "sort": "none",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "mean"
+          ]
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    STR_TO_DATE(CONCAT(annee_demande, '-', LPAD(mois_demande, 2, '0'), '-01'), '%Y-%m-%d') AS time,\n    score_sensibilite_mois AS score_sensibilite\nFROM vue_dash_pred_temps_mois\nWHERE annee_demande IS NOT NULL AND mois_demande IS NOT NULL\nORDER BY annee_demande, mois_demande;",
+          "refId": "A"
+        }
+      ],
+      "title": "Tendance mensuelle de sensibilité",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Comparaison par jour: sensibilité, favorabilité et volume de demandes.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 78,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 40
+              },
+              {
+                "color": "orange",
+                "value": 65
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "min": 0,
+          "max": 100
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "score_sensibilite_jour"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "green"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "score_favorabilite_jour"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "yellow"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "nb_demandes"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "blue"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 74
+      },
+      "id": 30,
+      "options": {
+        "orientation": "auto",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0,
+        "showValue": "always",
+        "stacking": "none",
+        "groupWidth": 0.72,
+        "barWidth": 0.78,
+        "barRadius": 0.08,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    jour_semaine,\n    score_sensibilite_jour,\n    score_favorabilite_jour,\n    nb_demandes\nFROM vue_dash_pred_temps_jour\nORDER BY jour_semaine_num;",
+          "refId": "A"
+        }
+      ],
+      "title": "Sensibilité par jour de semaine",
+      "type": "barchart"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 82
+      },
+      "id": 31,
+      "panels": [],
+      "title": "7. Modèles et importance des variables",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "KPI Top 3 modèles lié aux filtres dropdown stables. Le filtre % affiche tout.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "d",
+          "min": 0,
+          "max": 120
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 83
+      },
+      "id": 32,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "minVizWidth": 75,
+        "minVizHeight": 75
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT ROUND(AVG(holdout_mae), 2) AS MAE\nFROM vue_pred_section7_top3_modeles\nWHERE\n    COALESCE(stage_prediction, 'Inconnu') LIKE ${top3_etape:sqlstring}\n    AND COALESCE(model_name, '') LIKE ${top3_modele:sqlstring};",
+          "refId": "A"
+        }
+      ],
+      "title": "MAE moyen Top 3 modèles",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "KPI Top 3 modèles lié aux filtres dropdown stables. Le filtre % affiche tout.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "d",
+          "min": 0,
+          "max": 120
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 83
+      },
+      "id": 33,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "minVizWidth": 75,
+        "minVizHeight": 75
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT ROUND(AVG(holdout_rmse), 2) AS RMSE\nFROM vue_pred_section7_top3_modeles\nWHERE\n    COALESCE(stage_prediction, 'Inconnu') LIKE ${top3_etape:sqlstring}\n    AND COALESCE(model_name, '') LIKE ${top3_modele:sqlstring};",
+          "refId": "A"
+        }
+      ],
+      "title": "RMSE moyen Top 3 modèles",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "KPI Top 3 modèles lié aux filtres dropdown stables. Le filtre % affiche tout.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 0.4
+              },
+              {
+                "color": "yellow",
+                "value": 0.65
+              },
+              {
+                "color": "green",
+                "value": 0.8
+              }
+            ]
+          },
+          "min": 0,
+          "max": 1
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 83
+      },
+      "id": 34,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "minVizWidth": 75,
+        "minVizHeight": 75
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT ROUND(AVG(holdout_r2), 3) AS R2\nFROM vue_pred_section7_top3_modeles\nWHERE\n    COALESCE(stage_prediction, 'Inconnu') LIKE ${top3_etape:sqlstring}\n    AND COALESCE(model_name, '') LIKE ${top3_modele:sqlstring};",
+          "refId": "A"
+        }
+      ],
+      "title": "R² moyen Top 3 modèles",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Comparaison lisible des modèles: MAE et RMSE en jours. Plus petit = meilleur. Les filtres Top 3 modèles - étape et modèle s’appliquent seulement à cette section.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "jours",
+            "axisPlacement": "auto",
+            "fillOpacity": 82,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "unit": "d",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MAE"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "MAE (jours)"
+              },
+              {
+                "id": "unit",
+                "value": "d"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RMSE"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "RMSE (jours)"
+              },
+              {
+                "id": "unit",
+                "value": "d"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 83
+      },
+      "id": 35,
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0,
+        "showValue": "always",
+        "stacking": "none",
+        "groupWidth": 0.78,
+        "barWidth": 0.72,
+        "barRadius": 0.12,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "refId": "A",
+          "rawSql": "SELECT\n  CONCAT(\n    CASE\n      WHEN stage_prediction = 'avancee' THEN 'Avancée'\n      WHEN stage_prediction = 'intermediaire' THEN 'Intermédiaire'\n      WHEN stage_prediction = 'precoce' THEN 'Précoce'\n      ELSE COALESCE(stage_prediction, 'Inconnu')\n    END,\n    ' • #', rang_modele,\n    ' • ',\n    CASE\n      WHEN model_name = 'XGBoostRegressor' THEN 'XGBoost'\n      WHEN model_name = 'RandomForestRegressor' THEN 'RandomForest'\n      WHEN model_name = 'LinearRegression' THEN 'Linear'\n      WHEN model_name = 'GradientBoostingRegressor' THEN 'GradientBoost'\n      WHEN model_name = 'ExtraTreesRegressor' THEN 'ExtraTrees'\n      ELSE COALESCE(model_name, 'Inconnu')\n    END\n  ) AS modele_etape,\n  ROUND(holdout_mae, 2) AS MAE,\n  ROUND(holdout_rmse, 2) AS RMSE\nFROM vue_pred_section7_top3_modeles\nWHERE\n  COALESCE(stage_prediction, 'Inconnu') LIKE ${top3_etape:sqlstring}\n  AND COALESCE(model_name, '') LIKE ${top3_modele:sqlstring}\nORDER BY stage_prediction, rang_modele;"
+        }
+      ],
+      "title": "Top 3 modèles par étape — erreurs MAE/RMSE",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Importance des variables explicatives non-analyse.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 72,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 40
+              },
+              {
+                "color": "orange",
+                "value": 65
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 87
+      },
+      "id": 36,
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0,
+        "showValue": "always",
+        "stacking": "none",
+        "groupWidth": 0.72,
+        "barWidth": 0.82,
+        "barRadius": 0.12,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    variable_affichee AS variable,\n    importance\nFROM vue_pred_section7_importance_variables_dashboard\nORDER BY importance DESC\nLIMIT 20;",
+          "refId": "A"
+        }
+      ],
+      "title": "Top variables importantes hors analyses",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Donut des familles de variables contribuant aux modèles.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 91
+      },
+      "id": 37,
+      "options": {
+        "pieType": "donut",
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "reduceOptions": {
+          "values": true,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "sort": "desc"
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    famille_variable AS famille,\n    SUM(importance_totale) AS importance_totale\nFROM vue_pred_section7_importance_familles_top3\nGROUP BY famille_variable\nORDER BY importance_totale DESC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Importance par famille de variables",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Importance des analyses dans les modèles.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 72,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 40
+              },
+              {
+                "color": "orange",
+                "value": 65
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 99
+      },
+      "id": 38,
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0,
+        "showValue": "always",
+        "stacking": "none",
+        "groupWidth": 0.72,
+        "barWidth": 0.82,
+        "barRadius": 0.12,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    variable_affichee AS analyse,\n    importance\nFROM vue_pred_section7_importance_analyses_top\nORDER BY importance DESC\nLIMIT 30;",
+          "refId": "A"
+        }
+      ],
+      "title": "Top analyses explicatives limitées",
+      "type": "barchart"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 107
+      },
+      "id": 39,
+      "panels": [],
+      "title": "8. Informations techniques",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Les métriques historiques sont calculées sur l'échantillon HOLDOUT réservé à l'évaluation.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 10,
+        "x": 0,
+        "y": 108
+      },
+      "id": 40,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    nb_demandes_historiques AS demandes_holdout,\n    nb_clients,\n    nb_secteurs,\n    nb_produits,\n    nb_refs_labo\nFROM vue_dash_pred_synthese_erreurs;",
+          "refId": "A"
+        }
+      ],
+      "title": "Base d'évaluation historique",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 14,
+        "x": 10,
+        "y": 108
+      },
+      "id": 41,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n    stage_prediction AS Etape,\n    model_name AS Modele,\n    variant AS Variante,\n    model_family AS Famille,\n    holdout_mae AS MAE,\n    holdout_rmse AS RMSE,\n    holdout_r2 AS R2,\n    niveau_fiabilite_modele AS Fiabilite\nFROM vue_dash_pred_meilleurs_modeles_etapes\nORDER BY stage_prediction;",
+          "refId": "A"
+        }
+      ],
+      "title": "Meilleur modèle retenu par étape",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "${DS_MYSQL}"
+      },
+      "description": "Panel de contrôle pour vérifier que les vues retournent bien des lignes.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 114
+      },
+      "id": 42,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        }
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL}"
+          },
+          "format": "table",
+          "rawSql": "SELECT 'vue_pred_demandes_risque_en_cours' AS vue, COUNT(*) AS nb FROM vue_pred_demandes_risque_en_cours\nUNION ALL\nSELECT 'vue_dash_pred_erreurs_detail', COUNT(*) FROM vue_dash_pred_erreurs_detail\nUNION ALL\nSELECT 'vue_pred_analyses_top_sensibles', COUNT(*) FROM vue_pred_analyses_top_sensibles\nUNION ALL\nSELECT 'vue_pred_axes_sensibles_top', COUNT(*) FROM vue_pred_axes_sensibles_top;",
+          "refId": "A"
+        }
+      ],
+      "title": "Contrôle données vues prédictives",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": false,
+  "schemaVersion": 42,
+  "tags": [
+    "PFE",
+    "prediction",
+    "laboratoire",
+    "charts",
+    "enhanced",
+    "filters",
+    "drilldown",
+    "risk-colors",
+    "stable-v5",
+    "no-query-variables",
+    "P2P3-original-sql",
+    "import-safe",
+    "enhanced-appearance",
+    "reset-filters",
+    "v7",
+    "v8",
+    "list-filters",
+    "metier-color",
+    "panel-filters",
+    "v9",
+    "custom-list-filters",
+    "no-sql-variable-errors"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "mysql",
+          "value": "dfjy4b3bw7x8gf"
+        },
+        "label": "Datasource MySQL",
+        "name": "DS_MYSQL",
+        "options": [],
+        "query": "mysql",
+        "refresh": 1,
+        "type": "datasource",
+        "hide": 0
+      },
+      {
+        "name": "secteur",
+        "label": "Secteur",
+        "type": "query",
+        "hide": 0,
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "refresh": 1,
+        "definition": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(nom_secteur, 'Secteur non renseigné') AS CHAR) AS __text, CAST(COALESCE(nom_secteur, 'Secteur non renseigné') AS CHAR) AS __value\n  FROM vue_pred_demandes_risque_en_cours\n  WHERE 1=1\n  GROUP BY COALESCE(nom_secteur, 'Secteur non renseigné')\n) x\nORDER BY ordre, __text;",
+        "query": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(nom_secteur, 'Secteur non renseigné') AS CHAR) AS __text, CAST(COALESCE(nom_secteur, 'Secteur non renseigné') AS CHAR) AS __value\n  FROM vue_pred_demandes_risque_en_cours\n  WHERE 1=1\n  GROUP BY COALESCE(nom_secteur, 'Secteur non renseigné')\n) x\nORDER BY ordre, __text;",
+        "sort": 0,
+        "multi": false,
+        "includeAll": false,
+        "current": {
+          "selected": true,
+          "text": "Tous",
+          "value": "%"
+        },
+        "skipUrlSync": false,
+        "description": "Liste secteur. Choisir Tous pour tout afficher.",
+        "options": []
+      },
+      {
+        "name": "produit",
+        "label": "Produit",
+        "type": "query",
+        "hide": 0,
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "refresh": 1,
+        "definition": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(nom_produit, 'Produit non renseigné') AS CHAR) AS __text, CAST(COALESCE(nom_produit, 'Produit non renseigné') AS CHAR) AS __value\n  FROM vue_pred_demandes_risque_en_cours\n  WHERE 1=1\n  GROUP BY COALESCE(nom_produit, 'Produit non renseigné')\n) x\nORDER BY ordre, __text;",
+        "query": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(nom_produit, 'Produit non renseigné') AS CHAR) AS __text, CAST(COALESCE(nom_produit, 'Produit non renseigné') AS CHAR) AS __value\n  FROM vue_pred_demandes_risque_en_cours\n  WHERE 1=1\n  GROUP BY COALESCE(nom_produit, 'Produit non renseigné')\n) x\nORDER BY ordre, __text;",
+        "sort": 0,
+        "multi": false,
+        "includeAll": false,
+        "current": {
+          "selected": true,
+          "text": "Tous",
+          "value": "%"
+        },
+        "skipUrlSync": false,
+        "description": "Liste produit. Choisir Tous pour tout afficher.",
+        "options": []
+      },
+      {
+        "name": "risque",
+        "label": "Risque",
+        "type": "query",
+        "hide": 0,
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "refresh": 1,
+        "definition": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(niveau_risque_dashboard, niveau_risque, 'Inconnu') AS CHAR) AS __text, CAST(COALESCE(niveau_risque_dashboard, niveau_risque, 'Inconnu') AS CHAR) AS __value\n  FROM vue_pred_demandes_risque_en_cours\n  WHERE 1=1\n  GROUP BY COALESCE(niveau_risque_dashboard, niveau_risque, 'Inconnu')\n) x\nORDER BY ordre, __text;",
+        "query": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(niveau_risque_dashboard, niveau_risque, 'Inconnu') AS CHAR) AS __text, CAST(COALESCE(niveau_risque_dashboard, niveau_risque, 'Inconnu') AS CHAR) AS __value\n  FROM vue_pred_demandes_risque_en_cours\n  WHERE 1=1\n  GROUP BY COALESCE(niveau_risque_dashboard, niveau_risque, 'Inconnu')\n) x\nORDER BY ordre, __text;",
+        "sort": 0,
+        "multi": false,
+        "includeAll": false,
+        "current": {
+          "selected": true,
+          "text": "Tous",
+          "value": "%"
+        },
+        "skipUrlSync": false,
+        "description": "Liste niveau de risque. Choisir Tous pour tout afficher.",
+        "options": []
+      },
+      {
+        "name": "stage",
+        "label": "Étape prédiction",
+        "type": "query",
+        "hide": 0,
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "refresh": 1,
+        "definition": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(stage_prediction, 'Inconnu') AS CHAR) AS __text, CAST(COALESCE(stage_prediction, 'Inconnu') AS CHAR) AS __value\n  FROM vue_pred_demandes_risque_en_cours\n  WHERE 1=1\n  GROUP BY COALESCE(stage_prediction, 'Inconnu')\n) x\nORDER BY ordre, __text;",
+        "query": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(stage_prediction, 'Inconnu') AS CHAR) AS __text, CAST(COALESCE(stage_prediction, 'Inconnu') AS CHAR) AS __value\n  FROM vue_pred_demandes_risque_en_cours\n  WHERE 1=1\n  GROUP BY COALESCE(stage_prediction, 'Inconnu')\n) x\nORDER BY ordre, __text;",
+        "sort": 0,
+        "multi": false,
+        "includeAll": false,
+        "current": {
+          "selected": true,
+          "text": "Tous",
+          "value": "%"
+        },
+        "skipUrlSync": false,
+        "description": "Liste étape de prédiction. Choisir Tous pour tout afficher.",
+        "options": []
+      },
+      {
+        "name": "demande",
+        "label": "Réf. demande",
+        "type": "query",
+        "hide": 0,
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "refresh": 1,
+        "definition": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(ref_demande AS CHAR) AS __text, CAST(ref_demande AS CHAR) AS __value\n  FROM vue_pred_demandes_risque_en_cours\n  WHERE ref_demande IS NOT NULL AND ref_demande <> ''\n  GROUP BY ref_demande\n) x\nORDER BY ordre, __text;",
+        "query": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(ref_demande AS CHAR) AS __text, CAST(ref_demande AS CHAR) AS __value\n  FROM vue_pred_demandes_risque_en_cours\n  WHERE ref_demande IS NOT NULL AND ref_demande <> ''\n  GROUP BY ref_demande\n) x\nORDER BY ordre, __text;",
+        "sort": 0,
+        "multi": false,
+        "includeAll": false,
+        "current": {
+          "selected": true,
+          "text": "Tous",
+          "value": "%"
+        },
+        "skipUrlSync": false,
+        "description": "Liste référence demande. Choisir Tous pour tout afficher.",
+        "options": []
+      },
+      {
+        "name": "type_erreur",
+        "label": "Type erreur",
+        "type": "query",
+        "hide": 0,
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "refresh": 1,
+        "definition": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(type_erreur, 'Inconnu') AS CHAR) AS __text, CAST(COALESCE(type_erreur, 'Inconnu') AS CHAR) AS __value\n  FROM vue_dash_pred_erreurs_detail\n  WHERE 1=1\n  GROUP BY COALESCE(type_erreur, 'Inconnu')\n) x\nORDER BY ordre, __text;",
+        "query": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(type_erreur, 'Inconnu') AS CHAR) AS __text, CAST(COALESCE(type_erreur, 'Inconnu') AS CHAR) AS __value\n  FROM vue_dash_pred_erreurs_detail\n  WHERE 1=1\n  GROUP BY COALESCE(type_erreur, 'Inconnu')\n) x\nORDER BY ordre, __text;",
+        "sort": 0,
+        "multi": false,
+        "includeAll": false,
+        "current": {
+          "selected": true,
+          "text": "Tous",
+          "value": "%"
+        },
+        "skipUrlSync": false,
+        "description": "Liste type d’erreur. Choisir Tous pour tout afficher.",
+        "options": []
+      },
+      {
+        "name": "analyse",
+        "label": "Analyse",
+        "type": "query",
+        "hide": 0,
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "refresh": 1,
+        "definition": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(nom_analyse, 'Inconnu') AS CHAR) AS __text, CAST(COALESCE(nom_analyse, 'Inconnu') AS CHAR) AS __value\n  FROM vue_pred_analyses_top_sensibles\n  WHERE 1=1\n  GROUP BY COALESCE(nom_analyse, 'Inconnu')\n) x\nORDER BY ordre, __text;",
+        "query": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(nom_analyse, 'Inconnu') AS CHAR) AS __text, CAST(COALESCE(nom_analyse, 'Inconnu') AS CHAR) AS __value\n  FROM vue_pred_analyses_top_sensibles\n  WHERE 1=1\n  GROUP BY COALESCE(nom_analyse, 'Inconnu')\n) x\nORDER BY ordre, __text;",
+        "sort": 0,
+        "multi": false,
+        "includeAll": false,
+        "current": {
+          "selected": true,
+          "text": "Tous",
+          "value": "%"
+        },
+        "skipUrlSync": false,
+        "description": "Liste analyse. Choisir Tous pour tout afficher.",
+        "options": []
+      },
+      {
+        "name": "modele",
+        "label": "Modèle",
+        "type": "query",
+        "hide": 0,
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "refresh": 1,
+        "definition": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(model_name, 'Inconnu') AS CHAR) AS __text, CAST(COALESCE(model_name, 'Inconnu') AS CHAR) AS __value\n  FROM vue_pred_section7_top3_modeles\n  WHERE 1=1\n  GROUP BY COALESCE(model_name, 'Inconnu')\n) x\nORDER BY ordre, __text;",
+        "query": "SELECT __text, __value FROM (\n  SELECT 0 AS ordre, 'Tous' AS __text, '%' AS __value\n  UNION ALL\n  SELECT 1 AS ordre, CAST(COALESCE(model_name, 'Inconnu') AS CHAR) AS __text, CAST(COALESCE(model_name, 'Inconnu') AS CHAR) AS __value\n  FROM vue_pred_section7_top3_modeles\n  WHERE 1=1\n  GROUP BY COALESCE(model_name, 'Inconnu')\n) x\nORDER BY ordre, __text;",
+        "sort": 0,
+        "multi": false,
+        "includeAll": false,
+        "current": {
+          "selected": true,
+          "text": "Tous",
+          "value": "%"
+        },
+        "skipUrlSync": false,
+        "description": "Liste modèle. Choisir Tous pour tout afficher.",
+        "options": []
+      },
+      {
+        "name": "top3_etape",
+        "label": "Top 3 modèles - étape",
+        "type": "custom",
+        "hide": 0,
+        "query": "Tous : %,avancee,intermediaire,precoce",
+        "current": {
+          "selected": true,
+          "text": "Tous",
+          "value": "%"
+        },
+        "options": [
+          {
+            "selected": true,
+            "text": "Tous",
+            "value": "%"
+          },
+          {
+            "selected": false,
+            "text": "avancee",
+            "value": "avancee"
+          },
+          {
+            "selected": false,
+            "text": "intermediaire",
+            "value": "intermediaire"
+          },
+          {
+            "selected": false,
+            "text": "precoce",
+            "value": "precoce"
+          }
+        ],
+        "multi": false,
+        "includeAll": false,
+        "skipUrlSync": false,
+        "description": "Liste stable dédiée aux panels Top 3 modèles. Choisir Tous pour voir toutes les étapes."
+      },
+      {
+        "name": "top3_modele",
+        "label": "Top 3 modèles - modèle",
+        "type": "custom",
+        "hide": 0,
+        "query": "Tous : %,XGBoostRegressor,RandomForestRegressor,Ridge,LinearRegression,Lasso,ElasticNet,ExtraTreesRegressor,GradientBoostingRegressor",
+        "current": {
+          "selected": true,
+          "text": "Tous",
+          "value": "%"
+        },
+        "options": [
+          {
+            "selected": true,
+            "text": "Tous",
+            "value": "%"
+          },
+          {
+            "selected": false,
+            "text": "XGBoostRegressor",
+            "value": "XGBoostRegressor"
+          },
+          {
+            "selected": false,
+            "text": "RandomForestRegressor",
+            "value": "RandomForestRegressor"
+          },
+          {
+            "selected": false,
+            "text": "Ridge",
+            "value": "Ridge"
+          },
+          {
+            "selected": false,
+            "text": "LinearRegression",
+            "value": "LinearRegression"
+          },
+          {
+            "selected": false,
+            "text": "Lasso",
+            "value": "Lasso"
+          },
+          {
+            "selected": false,
+            "text": "ElasticNet",
+            "value": "ElasticNet"
+          },
+          {
+            "selected": false,
+            "text": "ExtraTreesRegressor",
+            "value": "ExtraTreesRegressor"
+          },
+          {
+            "selected": false,
+            "text": "GradientBoostingRegressor",
+            "value": "GradientBoostingRegressor"
+          }
+        ],
+        "multi": false,
+        "includeAll": false,
+        "skipUrlSync": false,
+        "description": "Liste stable dédiée aux panels Top 3 modèles. Choisir Tous pour voir tous les modèles."
+      },
+      {
+        "name": "metier_type",
+        "label": "Éléments métier - type",
+        "type": "custom",
+        "hide": 0,
+        "query": "Tous : %,Produit fini,Labo / reference labo,Secteur",
+        "current": {
+          "selected": true,
+          "text": "Tous",
+          "value": "%"
+        },
+        "options": [
+          {
+            "selected": true,
+            "text": "Tous",
+            "value": "%"
+          },
+          {
+            "selected": false,
+            "text": "Produit fini",
+            "value": "Produit fini"
+          },
+          {
+            "selected": false,
+            "text": "Labo / reference labo",
+            "value": "Labo / reference labo"
+          },
+          {
+            "selected": false,
+            "text": "Secteur",
+            "value": "Secteur"
+          }
+        ],
+        "multi": false,
+        "includeAll": false,
+        "skipUrlSync": false,
+        "description": "Liste stable dédiée au tableau Éléments métier. Choisir Tous pour voir tous les types."
+      },
+      {
+        "name": "metier_niveau",
+        "label": "Éléments métier - niveau sensibilité",
+        "type": "custom",
+        "hide": 0,
+        "query": "Tous : %,Critique,A surveiller,À surveiller,Eleve,Élevé,Moyen,Faible,Normal,Inconnu",
+        "current": {
+          "selected": true,
+          "text": "Tous",
+          "value": "%"
+        },
+        "options": [
+          {
+            "selected": true,
+            "text": "Tous",
+            "value": "%"
+          },
+          {
+            "selected": false,
+            "text": "Critique",
+            "value": "Critique"
+          },
+          {
+            "selected": false,
+            "text": "A surveiller",
+            "value": "A surveiller"
+          },
+          {
+            "selected": false,
+            "text": "À surveiller",
+            "value": "À surveiller"
+          },
+          {
+            "selected": false,
+            "text": "Eleve",
+            "value": "Eleve"
+          },
+          {
+            "selected": false,
+            "text": "Élevé",
+            "value": "Élevé"
+          },
+          {
+            "selected": false,
+            "text": "Moyen",
+            "value": "Moyen"
+          },
+          {
+            "selected": false,
+            "text": "Faible",
+            "value": "Faible"
+          },
+          {
+            "selected": false,
+            "text": "Normal",
+            "value": "Normal"
+          },
+          {
+            "selected": false,
+            "text": "Inconnu",
+            "value": "Inconnu"
+          }
+        ],
+        "multi": false,
+        "includeAll": false,
+        "skipUrlSync": false,
+        "description": "Liste stable dédiée au tableau Éléments métier. Choisir Tous pour voir tous les niveaux."
+      }
+    ]
+  },
+  "time": {
+    "from": "now-2y",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Dashboard prédictive - enhanced v12",
+  "uid": "pfe-labo-enh-v12",
+  "version": 0,
+  "description": "Version v12: filtres en listes avec Tous, section 3 restaurée, Top 3 modèles en graphique MAE/RMSE lisible.",
+  "__inputs": [
+    {
+      "name": "DS_MYSQL",
+      "label": "Datasource MySQL",
+      "description": "Datasource MySQL pour le DW laboratoire",
+      "type": "datasource",
+      "pluginId": "mysql",
+      "pluginName": "MySQL"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.3.2"
+    },
+    {
+      "type": "datasource",
+      "id": "mysql",
+      "name": "MySQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "bargauge",
+      "name": "Bar gauge",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ]
+}

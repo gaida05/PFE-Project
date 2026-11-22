@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demandes client</title>
+
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/23.1.5/css/dx.light.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn3.devexpress.com/jslib/23.1.5/js/dx.all.js"></script>
+</head>
+<body class="dx-viewport">
+    <header class="header">
+        <h1>Demandes client</h1>
+    </header>
+
+    <main class="container">
+        <section class="filter-section" id="filterSection">
+            <div class="filter-card">
+                <button id="btnToggleFilterMini" type="button" title="Cacher le filtre">−</button>
+
+                <h1 class="filter-title">Filtre par mois</h1>
+
+                <div class="filter-row filter-row-with-buttons">
+                    <div class="filter-group">
+                        <div id="dashboardMonthYear"></div>
+                    </div>
+
+                    <div class="filter-buttons">
+                        <div id="btnDashboardFiltrer"></div>
+                        <div id="btnDashboardReset"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="grid-section">
+            <h2>Rapports</h2>
+            <div class="top-note">
+                Un rapport par demande d'analyse. Les boutons F1 / F2 / F3 génèrent les formats.
+                Les mini-boutons AR / EN ouvrent la traduction du format sélectionné.
+            </div>
+            <div id="gridDemandesClient"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Laboratoire d'analyses</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plateforme Décisionnelle — Laboratoire</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --panel-soft: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+      --text: #1f2937;
+      --muted: #64748b;
+      --line: #e5edf7;
+      --primary: #2563eb;
+      --primary-2: #3b82f6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --violet: #8b5cf6;
+      --cyan: #06b6d4;
+      --shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+
+      /* Badge colours aligned with style.css */
+      --blue-bg: #dbeafe;   --blue-fg: #1d4ed8;
+      --teal-bg: #d1fae5;   --teal-fg: #065f46;
+      --purple-bg: #ede9fe; --purple-fg: #6d28d9;
+    }
+
+    html, body {
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ──────────────────────────────────────────── */
+    .header {
+      padding: 28px 32px 22px;
+      background: linear-gradient(180deg, #f9fbff 0%, #eef4ff 100%);
+      border-bottom: 1px solid #dce7f8;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .header-title {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #17325c;
+      margin-bottom: 6px;
+      line-height: 1.1;
+    }
+    .header-sub {
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .header-clock { text-align: right; flex-shrink: 0; }
+    .clock-time {
+      font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #17325c;
+      line-height: 1;
+    }
+    .clock-date {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    /* ── STATS BAR ───────────────────────────────────────── */
+    .stats-bar {
+      display: flex;
+      gap: 1px;
+      background: var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .stat-item {
+      flex: 1;
+      background: var(--panel);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .stat-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      flex-shrink: 0;
+      box-shadow: 0 0 0 3px rgba(16,185,129,.18);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .stat-label { font-size: 13px; font-weight: 600; color: var(--muted); }
+    .stat-value {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+      margin-left: auto;
+    }
+
+    /* ── GRID ────────────────────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      padding: 24px 32px 40px;
+    }
+
+    /* ── CARD ────────────────────────────────────────────── */
+    .card {
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    /* subtle top-left glow */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(59,130,246,.04), rgba(255,255,255,0));
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 44px rgba(15, 23, 42, 0.13);
+      border-color: #c8daf5;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Icon — matches .filter-icon style */
+    .card-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.22);
+    }
+    .card-icon svg { width: 22px; height: 22px; }
+
+    .card-icon.blue   { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
+    .card-icon.teal   { background: linear-gradient(135deg, #059669, #10b981); box-shadow: 0 10px 24px rgba(16,185,129,.22); }
+    .card-icon.purple { background: linear-gradient(135deg, #7c3aed, var(--violet)); box-shadow: 0 10px 24px rgba(139,92,246,.22); }
+
+    /* Badge */
+    .badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 999px;
+      letter-spacing: 0.01em;
+    }
+    .badge.blue   { background: var(--blue-bg);   color: var(--blue-fg); }
+    .badge.teal   { background: var(--teal-bg);   color: var(--teal-fg); }
+    .badge.purple { background: var(--purple-bg); color: var(--purple-fg); }
+
+    /* Body */
+    .card-body { flex: 1; }
+    .card-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #17325c;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .card-desc {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* Footer */
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      margin-top: auto;
+    }
+    .card-meta {
+      font-size: 12px;
+      font-weight: 700;
+      color: #48617f;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card-meta svg { width: 14px; height: 14px; }
+
+    /* Button — matches .ghost-btn / .primary-btn */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 9px 16px;
+      border-radius: 12px;
+      border: 1px solid #d8e3f2;
+      background: white;
+      color: #334155;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 8px 16px rgba(15,23,42,.06);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(15,23,42,.10);
+      background: #f8fbff;
+    }
+    .btn svg { width: 14px; height: 14px; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; padding: 16px; }
+      .header { flex-direction: column; align-items: flex-start; padding: 22px 20px; }
+      .header-clock { text-align: left; }
+      .stats-bar { flex-direction: column; gap: 0; }
+    }
+
+    /* ── REVEAL ANIMATION ────────────────────────────────── */
+    .card {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: reveal 0.45s ease forwards;
+    }
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.15s; }
+    .card:nth-child(3) { animation-delay: 0.25s; }
+    @keyframes reveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div>
+    <p class="eyebrow">Plateforme décisionnelle</p>
+    <h1 class="header-title">Tableau de bord du laboratoire</h1>
+    <p class="header-sub">Opérations, qualité et prédictions — pilotez votre activité en un coup d'œil.</p>
+  </div>
+  <div class="header-clock">
+    <div class="clock-time" id="clock-time">--:--:--</div>
+    <div class="clock-date" id="clock-date">--</div>
+  </div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-dot"></span>
+    <span class="stat-label">Dashboards actifs</span>
+    <span class="stat-value">3</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-dot"></span>
+    <span class="stat-label">Système opérationnel</span>
+    <span class="stat-value">En ligne</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-dot"></span>
+    <span class="stat-label">Grafana</span>
+    <span class="stat-value">localhost:3000</span>
+  </div>
+</div>
+
+<main class="grid">
+
+  <!-- Dashboard Opérationnel -->
+  <div class="card">
+    <div class="card-top">
+      <div class="card-icon blue">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.559.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.894.149c-.424.07-.764.383-.929.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.398.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.506-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.526-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
+      </div>
+      <span class="badge blue">Opérationnel</span>
+    </div>
+    <div class="card-body">
+      <p class="card-label">Suivi des activités</p>
+      <h2 class="card-title">Dashboard opérationnel</h2>
+      <p class="card-desc">Pilotage en temps réel des flux d'analyses, des demandes en cours et des ressources du laboratoire.</p>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
+        Temps réel
+      </span>
+      <a class="btn" href="dashboard_globale/front_end/index.html">
+        Ouvrir
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Dashboard Performance & Qualité -->
+  <div class="card">
+    <div class="card-top">
+      <div class="card-icon teal">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
+      </div>
+      <span class="badge teal">Performance &amp; qualité</span>
+    </div>
+    <div class="card-body">
+      <p class="card-label">Indicateurs clés</p>
+      <h2 class="card-title">Dashboard performance &amp; qualité</h2>
+      <p class="card-desc">Suivi des KPIs, taux de conformité, délais de rendu et indicateurs qualité du laboratoire.</p>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+        KPIs &amp; conformité
+      </span>
+      <a class="btn" href="dashboard_mensuel/front_end/index.html">
+        Ouvrir
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Dashboard Prédictif -->
+  <div class="card">
+    <div class="card-top">
+      <div class="card-icon purple">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"/></svg>
+      </div>
+      <span class="badge purple">IA &amp; prédiction</span>
+    </div>
+    <div class="card-body">
+      <p class="card-label">Analyse avancée</p>
+      <h2 class="card-title">Dashboard prédictif</h2>
+      <p class="card-desc">Anticipez les tendances, la charge d'activité et les risques qualité grâce aux modèles prédictifs via Grafana.</p>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.864 4.243A7.5 7.5 0 0 1 19.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 0 0 4.5 10.5a7.464 7.464 0 0 1-1.15 3.993m1.989 3.559A11.209 11.209 0 0 0 8.25 10.5a3.75 3.75 0 1 1 7.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 0 1-3.6 9.75m6.633-4.596a18.666 18.666 0 0 1-2.485 5.33"/></svg>
+        Grafana
+      </span>
+      <a class="btn" href="dashboard_predictif.html">
+        Ouvrir
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function tick() {
+    const now = new Date();
+    document.getElementById('clock-time').textContent = pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+    document.getElementById('clock-date').textContent = now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+  tick(); setInterval(tick, 1000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+body {
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.filter-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+.filter-card {
+    border: 2px solid #007bff;  
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.filter-title {
+    text-align: center;
+    font-family:Arial, Helvetica, sans-serif;
+    color: black;  
+    font-size: 24px;
+    font-weight: bolder;
+    margin: 0 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #007bff;
+}
+
+.filter-row {
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;              
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.dx-datebox {
+    width: 100%;
+}
+
+.dx-texteditor {
+    border-radius: 4px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+#btnFiltrer.dx-button-success {
+    background-color: green;
+    border-color: blue;
+    width: 100%;
+}
+
+#btnFiltrer.dx-button-success:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+#gridContainer {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.dx-group-panel {
+    background-color: #f8f9fa;
+    border: 2px dashed #007bff;  
+    border-radius: 4px;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+.dx-group-panel-message {
+    color: #007bff;
+    font-size: 14px;
+}
+.dx-datagrid .dx-datagrid-headers {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.dx-datagrid .dx-header-row {
+    color: #495057;
+    font-weight: 600;
+}
+
+.dx-datagrid-norows-message {
+    text-align: center;
+    padding: 20px;
+    color: #007bff; 
+    font-size: 16px;
+}
+
+.font-weight-bold {
+    font-weight: 600;
+}
+
+.footer {
+    background-color: beige;
+    text-align: center;
+    padding: 10px 15px;
+    color: #555;
+    font-size: 14px;
+    border-top: 1px solid #ddd;
+    margin-top: 30px;
+}
+.export-icon-container {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.export-icon {
+    cursor: pointer !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 4px !important;
+    background: #ffffff !important;
+    border: 1px solid #d0d0d0 !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+}
+
+.export-icon:hover {
+    background: #f0f0f0 !important;
+    border-color: #999999 !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+}
+
+.export-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: #333333 !important;
+}
+
+.export-icon svg text {
+    fill: #333333 !important;
+    stroke: none !important;
+}
+.dx-datagrid-header-panel .dx-toolbar-items-container {
+    overflow: visible !important;
+}
+
+.dx-toolbar-item {
+    overflow: visible !important;
+}
+.dx-datagrid-search-panel {
+    width: 240px !important;
+}
+.filter-collapsed {
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 10px;
+}
+
+.filter-collapsed-title {
+    flex: 1;
+    text-align: center;
+}
+
+.filter-card-top {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 4px;
+}
+
+.filter-toggle-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid #cfcfcf;
+    background: #f8f9fa;
+    color: #222;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filter-toggle-btn:hover {
+    background: #eceff3;
+}

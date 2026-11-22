@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plateforme Décisionnelle — Laboratoire</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f5f4f0; --surface: #ffffff;
+      --border: rgba(0,0,0,0.08); --border-strong: rgba(0,0,0,0.15);
+      --text-primary: #111110; --text-secondary: #6b6b67; --text-tertiary: #a0a09b;
+      --blue-bg: #e8f0fe; --blue-fg: #1a56c4;
+      --teal-bg: #e0f5ee; --teal-fg: #0e6e55;
+      --purple-bg: #eeecfd; --purple-fg: #5142b5;
+      --radius-md: 8px; --radius-lg: 14px; --radius-xl: 20px;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; }
+    .header { padding: 3rem 3rem 2.5rem; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; }
+    .eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+    .header-title { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); margin-bottom: 6px; line-height: 1.1; }
+    .header-sub { font-size: 14px; color: var(--text-secondary); }
+    .header-clock { text-align: right; flex-shrink: 0; }
+    .clock-time { font-family: 'DM Mono', monospace; font-size: 28px; font-weight: 500; letter-spacing: -0.02em; color: var(--text-primary); line-height: 1; }
+    .clock-date { font-size: 13px; color: var(--text-tertiary); margin-top: 5px; }
+    .stats-bar { display: flex; gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
+    .stat-item { flex: 1; background: var(--surface); padding: 1.1rem 1.5rem; display: flex; align-items: center; gap: 12px; }
+    .stat-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex-shrink: 0; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .stat-label { font-size: 13px; color: var(--text-secondary); }
+    .stat-value { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-left: auto; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 2rem 3rem 3rem; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 1.75rem; display: flex; flex-direction: column; gap: 1.25rem; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; }
+    .card:hover { border-color: var(--border-strong); box-shadow: 0 4px 24px rgba(0,0,0,0.07); transform: translateY(-2px); }
+    .card-top { display: flex; align-items: center; justify-content: space-between; }
+    .card-icon { width: 44px; height: 44px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
+    .card-icon svg { width: 22px; height: 22px; }
+    .badge { font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 99px; }
+    .badge.blue   { background: var(--blue-bg);   color: var(--blue-fg); }
+    .badge.teal   { background: var(--teal-bg);   color: var(--teal-fg); }
+    .badge.purple { background: var(--purple-bg); color: var(--purple-fg); }
+    .card-body { flex: 1; }
+    .card-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); margin-bottom: 6px; }
+    .card-title { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--text-primary); margin-bottom: 8px; line-height: 1.3; }
+    .card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border); margin-top: auto; }
+    .card-meta { font-size: 12px; color: var(--text-tertiary); display: flex; align-items: center; gap: 6px; }
+    .card-meta svg { width: 14px; height: 14px; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: var(--radius-md); border: 1px solid var(--border-strong); background: transparent; color: var(--text-primary); text-decoration: none; cursor: pointer; transition: background 0.15s; }
+    .btn:hover { background: var(--bg); }
+    .btn svg { width: 14px; height: 14px; }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; padding: 1.5rem; }
+      .header { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+      .header-clock { text-align: left; }
+      .stats-bar { flex-direction: column; gap: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div>
+    <p class="eyebrow">Plateforme décisionnelle</p>
+    <h1 class="header-title">Tableau de bord du laboratoire</h1>
+    <p class="header-sub">Opérations, qualité et prédictions — pilotez votre activité en un coup d'œil.</p>
+  </div>
+  <div class="header-clock">
+    <div class="clock-time" id="clock-time">--:--:--</div>
+    <div class="clock-date" id="clock-date">--</div>
+  </div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-dot"></span>
+    <span class="stat-label">Dashboards actifs</span>
+    <span class="stat-value">3</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-dot"></span>
+    <span class="stat-label">Système opérationnel</span>
+    <span class="stat-value">En ligne</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-dot"></span>
+    <span class="stat-label">Grafana</span>
+    <span class="stat-value">localhost:3000</span>
+  </div>
+</div>
+
+<main class="grid">
+
+  <div class="card">
+    <div class="card-top">
+      <div class="card-icon" style="background:var(--blue-bg);color:var(--blue-fg);">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.559.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.894.149c-.424.07-.764.383-.929.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.398.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.506-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.526-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
+      </div>
+      <span class="badge blue">Opérationnel</span>
+    </div>
+    <div class="card-body">
+      <p class="card-label">Suivi des activités</p>
+      <h2 class="card-title">Dashboard opérationnel</h2>
+      <p class="card-desc">Pilotage en temps réel des flux d'analyses, des demandes en cours et des ressources du laboratoire.</p>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
+        Temps réel
+      </span>
+      <a class="btn" href="dashboard_globale/front_end/index.html">
+        Ouvrir
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="card-icon" style="background:var(--teal-bg);color:var(--teal-fg);">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
+      </div>
+      <span class="badge teal">Performance &amp; qualité</span>
+    </div>
+    <div class="card-body">
+      <p class="card-label">Indicateurs clés</p>
+      <h2 class="card-title">Dashboard performance &amp; qualité</h2>
+      <p class="card-desc">Suivi des KPIs, taux de conformité, délais de rendu et indicateurs qualité du laboratoire.</p>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+        KPIs &amp; conformité
+      </span>
+      <a class="btn" href="dashboard_mensuel/front_end/index.html">
+        Ouvrir
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="card-icon" style="background:var(--purple-bg);color:var(--purple-fg);">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"/></svg>
+      </div>
+      <span class="badge purple">IA &amp; prédiction</span>
+    </div>
+    <div class="card-body">
+      <p class="card-label">Analyse avancée</p>
+      <h2 class="card-title">Dashboard prédictif</h2>
+      <p class="card-desc">Anticipez les tendances, la charge d'activité et les risques qualité grâce aux modèles prédictifs via Grafana.</p>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.864 4.243A7.5 7.5 0 0 1 19.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 0 0 4.5 10.5a7.464 7.464 0 0 1-1.15 3.993m1.989 3.559A11.209 11.209 0 0 0 8.25 10.5a3.75 3.75 0 1 1 7.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 0 1-3.6 9.75m6.633-4.596a18.666 18.666 0 0 1-2.485 5.33"/></svg>
+        Grafana
+      </span>
+      <a class="btn" href="http://localhost:3000/d/pfe-labo-enh-v12/dashboard-predictive-enhanced-v12" target="_blank" rel="noopener">
+        Ouvrir
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function tick() {
+    const now = new Date();
+    document.getElementById('clock-time').textContent = pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+    document.getElementById('clock-date').textContent = now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+  tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>
+

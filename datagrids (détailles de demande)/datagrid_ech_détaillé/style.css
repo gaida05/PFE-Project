@@ -1,0 +1,312 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: #f4f7fb;
+    color: #2c3e50;
+}
+
+body.dx-viewport {
+    background: #f4f7fb;
+}
+
+.container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 24px 28px 40px;
+    box-sizing: border-box;
+}
+
+.filter-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 28px;
+    position: relative;
+}
+
+.filter-card {
+    width: 100%;
+    max-width: 720px;
+    background: #ffffff;
+    border: 2px solid #2f80d1;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(31, 78, 121, 0.10);
+    padding: 22px 28px 26px;
+    box-sizing: border-box;
+}
+
+.filter-card-top {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 6px;
+}
+
+.filter-title {
+    margin: 0 0 22px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 500;
+    color: #2f80d1;
+    letter-spacing: 0.2px;
+}
+
+.filter-row {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+}
+
+.filter-group {
+    width: 100%;
+    max-width: 320px;
+}
+
+.text-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 26px;
+}
+
+.filter-collapsed {
+    width: 100%;
+    max-width: 720px;
+    min-height: 54px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    border: 2px solid #2f80d1;
+    border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(31, 78, 121, 0.08);
+    padding: 0 18px;
+    box-sizing: border-box;
+}
+
+.filter-collapsed-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2f80d1;
+}
+
+.filter-toggle-btn {
+    width: 34px;
+    height: 34px;
+    border: 1px solid #2f80d1;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #2f80d1;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    line-height: 1;
+    transition: all 0.2s ease;
+}
+
+.filter-toggle-btn:hover {
+    background: #2f80d1;
+    color: #ffffff;
+}
+
+#btnFiltrer .dx-button {
+    min-width: 140px;
+    height: 44px;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.20);
+}
+
+#btnImport .dx-button,
+#btnCreateFilter .dx-button {
+    border-radius: 10px;
+}
+
+#grid-section {
+    background: #ffffff;
+    border: 1px solid #d9e3f0;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(31, 78, 121, 0.08);
+    padding: 18px 18px 12px;
+    box-sizing: border-box;
+}
+
+#gridContainer {
+    width: 100%;
+}
+
+#btnCreateFilter {
+    margin-top: 14px;
+}
+
+.footer {
+    margin-top: 28px;
+    padding: 16px 10px 24px;
+    text-align: center;
+    color: #7b8a9a;
+    font-size: 14px;
+}
+
+/* DevExtreme customization */
+.dx-datagrid {
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.dx-datagrid-headers {
+    background: #f8fbff;
+}
+
+.dx-datagrid-headers .dx-header-row > td {
+    font-weight: 600;
+    color: #49627a;
+    border-color: #dde6f1 !important;
+}
+
+.dx-datagrid-rowsview .dx-row {
+    border-color: #edf2f7;
+}
+
+.dx-datagrid-rowsview .dx-row-alt > td {
+    background: #fbfdff;
+}
+
+.dx-datagrid .dx-row > td {
+    vertical-align: middle;
+}
+
+.dx-toolbar {
+    background: transparent;
+}
+
+.dx-datagrid-search-panel {
+    margin-left: 10px;
+}
+
+.dx-texteditor,
+.dx-dropdowneditor-button,
+.dx-datebox {
+    border-radius: 10px !important;
+}
+
+.dx-texteditor.dx-editor-outlined {
+    background: #ffffff;
+}
+
+.dx-datagrid-norows {
+    color: #90a1b5;
+    font-size: 18px;
+}
+
+.dx-button-mode-contained.dx-button-success {
+    background-color: #5cb85c;
+    border-color: #5cb85c;
+}
+
+.dx-button-mode-contained.dx-button-success:hover {
+    background-color: #4cae4c;
+    border-color: #4cae4c;
+}
+
+.export-icon-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.export-icon {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid #d5deea;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 8px rgba(31, 78, 121, 0.06);
+}
+
+.export-icon:hover {
+    background: #f3f8fe;
+    border-color: #2f80d1;
+    transform: translateY(-1px);
+}
+
+/* nicer popup / chooser */
+.dx-overlay-content,
+.dx-popup-normal {
+    border-radius: 16px;
+}
+
+.dx-datagrid-column-chooser .dx-popup-content,
+.dx-popup-content {
+    border-radius: 14px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .container {
+        padding: 18px 14px 28px;
+    }
+
+    .filter-card,
+    .filter-collapsed {
+        max-width: 100%;
+    }
+
+    #grid-section {
+        padding: 14px 12px 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-title {
+        font-size: 24px;
+    }
+
+    .filter-group {
+        max-width: 100%;
+    }
+
+    .dx-datagrid-search-panel {
+        width: 100% !important;
+        max-width: 220px;
+    }
+
+    .export-icon {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 560px) {
+    .filter-card {
+        padding: 18px 16px 20px;
+        border-radius: 18px;
+    }
+
+    .filter-title {
+        font-size: 22px;
+    }
+
+    #btnFiltrer .dx-button {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .text-center {
+        width: 100%;
+    }
+
+    .filter-toggle-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+    }
+}

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard performance et qualité</title>
+  <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/23.1.5/css/dx.light.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn3.devexpress.com/jslib/23.1.5/js/dx.all.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body class="dx-viewport">
+  <header class="hero-header reveal shown">
+    <div class="hero-left">
+      <span class="hero-kicker">Performance laboratoire</span>
+      <h1>Dashboard performance et qualité</h1>
+      <p>Délais, faisabilité, validation, conformité, clients, analyses sensibles ML et performance commerciale.</p>
+    </div>
+    <div class="hero-right">
+      <div class="hero-pill">
+        <span>Période active</span>
+        <strong id="heroPeriodLabel">Toutes</strong>
+      </div>
+      <div class="hero-pill danger">
+        <span>Retards prédits</span>
+        <strong id="heroPredictedDelays">0</strong>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="filter-shell reveal shown" id="filterShell">
+      <div class="filter-head">
+        <div class="filter-title">
+          <span class="filter-icon">⌕</span>
+          <div>
+            <h2>Barre de filtres</h2>
+            <small>Période, année, mois, badges actifs et rechargement global.</small>
+          </div>
+        </div>
+        <div class="filter-actions-right">
+          <div id="btnToggleFilterBar"></div>
+        </div>
+      </div>
+
+      <div class="filter-body" id="filterBarContent">
+        <div class="filters-grid filter-fields-row">
+          <div class="field filter-field-item">
+            <label for="dashboardDateDebut">📅 Date début</label>
+            <div id="dashboardDateDebut"></div>
+          </div>
+          <div class="field filter-field-item">
+            <label for="dashboardDateFin">📅 Date fin</label>
+            <div id="dashboardDateFin"></div>
+          </div>
+          <div class="field filter-field-item">
+            <label for="dashboardYearFilter">🗓️ Année</label>
+            <div id="dashboardYearFilter"></div>
+          </div>
+          <div class="field filter-field-item">
+            <label for="dashboardMonthFilter">🕘 Mois</label>
+            <div id="dashboardMonthFilter"></div>
+          </div>
+        </div>
+
+        <div class="filters-footer filter-actions-row">
+          <div class="quick-actions filter-quick-actions">
+            <div id="btnDashboardToday"></div>
+            <div id="btnDashboardThisWeek"></div>
+            <div id="btnDashboardThisMonth"></div>
+            <div id="btnDashboardThisYear"></div>
+          </div>
+          <div class="main-actions filter-main-actions">
+            <div id="btnDashboardFiltrer"></div>
+            <div id="btnDashboardReset"></div>
+          </div>
+        </div>
+
+        <div class="active-badges active-filter-badges" id="activeFilterBadges"></div>
+      </div>
+    </section>
+
+    <nav class="tabs reveal shown" id="viewTabs">
+      <button class="tab-btn active" type="button" data-view="global">Vue globale</button>
+      <button class="tab-btn" type="button" data-view="clients">Clients</button>
+      <button class="tab-btn" type="button" data-view="analyses">Analyses & conformité</button>
+      <button class="tab-btn" type="button" data-view="commercial">Commercial</button>
+    </nav>
+
+    <div class="context-bar reveal shown">
+      <div class="context-title">
+        <h3 id="contextTitle">Vue globale</h3>
+        <p id="contextSubtitle">KPIs, funnel, délais, conformité, commercial et synthèse ML.</p>
+      </div>
+      <div class="context-actions">
+        <button class="mini-pill strong" id="clearDrilldownBtn" type="button">Effacer drill-down</button>
+        <button class="mini-pill" id="showCurrentFilterBtn" type="button">Aucun drill-down</button>
+      </div>
+    </div>
+
+    <section class="view active" id="view-global">
+      <div class="kpi-grid kpi-grid-main reveal shown" id="kpiGrid"></div>
+
+      <div class="panel-grid-main">
+        <section class="panel panel-large reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Funnel performance</h4>
+              <p>Demandes clients → faisables → validées → devis → factures → rapports finaux.</p>
+            </div>
+          </div>
+          <div class="chart-wrap chart-tall"><div id="funnelChart"></div></div>
+        </section>
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Statistiques prédictives</h4>
+              <p>Synthèse métier du ML, sans métriques modèle.</p>
+            </div>
+          </div>
+          <div class="prediction-stat-list" id="predictiveStats"></div>
+        </section>
+      </div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Évolution du délai moyen</h4>
+              <p>Délai moyen global par mois.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="evolutionDelayChart"></div></div>
+        </section>
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Faisabilité / validation globale</h4>
+              <p>Oui / Non, sans analyse par statut.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="faisabiliteValidationChart"></div></div>
+        </section>
+      </div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Conformité globale</h4>
+              <p>Échantillons conformes et non conformes.</p>
+            </div>
+          </div>
+          <div class="chart-wrap chart-wrap-relative">
+            <div id="conformiteGlobalChart"></div>
+            <div class="pie-center-label" id="conformiteGlobalCenter"></div>
+          </div>
+        </section>
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Retards prédits</h4>
+              <p>Demandes avec ou sans retard prédit.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="riskDistributionChart"></div></div>
+        </section>
+      </div>
+
+      <section class="panel reveal shown">
+        <div class="panel-head">
+          <div>
+            <h4>Commercial summary</h4>
+            <p>Barres = devis/factures, ligne = taux de transformation.</p>
+          </div>
+        </div>
+        <div class="chart-wrap"><div id="commercialSummaryChart"></div></div>
+      </section>
+    </section>
+
+    <section class="view" id="view-clients">
+      <div class="kpi-grid kpi-grid-secondary reveal shown" id="clientsKpiGrid"></div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Top clients par volume</h4>
+              <p>Clients les plus actifs.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="topClientsChart"></div></div>
+        </section>
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Délai moyen de traitement des demandes clients par client</h4>
+              <p>Calculé entre la date demande et la date réception.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="delayByClientChart"></div></div>
+        </section>
+      </div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Faisabilité / validation par client</h4>
+              <p>Comparaison Oui/Non par client.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="faisabiliteValidationClientChart"></div></div>
+        </section>
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Clients prioritaires ML</h4>
+              <p>Priorité calculée à partir des demandes critiques, des risques élevés et des retards prédits.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="clientsPriorityMlChart"></div></div>
+        </section>
+      </div>
+
+      <section class="panel reveal shown">
+        <div class="panel-head">
+          <div>
+            <h4>Volume demandes client dans le temps</h4>
+            <p>Évolution mensuelle des clients principaux.</p>
+          </div>
+        </div>
+        <div class="chart-wrap"><div id="clientTimelineChart"></div></div>
+      </section>
+
+      <section class="table-panel reveal shown">
+        <div class="panel-head">
+          <div>
+            <h4>Demandes clients</h4>
+            <p>Faisabilité, validité, délais, retard prédit et priorité ML.</p>
+          </div>
+        </div>
+        <div class="table-shell" id="gridDemandesClient"></div>
+      </section>
+    </section>
+
+    <section class="view" id="view-analyses">
+      <div class="kpi-grid kpi-grid-secondary reveal shown" id="analysesKpiGrid"></div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Analyses les plus fréquentes</h4>
+              <p>Volume des analyses, sans les valeurs inconnues.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="frequentAnalysesChart"></div></div>
+        </section>
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Analyses sensibles ML</h4>
+              <p>La sensibilité combine le retard prédit, le délai moyen et la priorité prédictive.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="analyseSensitivityMlChart"></div></div>
+        </section>
+      </div>
+
+      <section class="panel reveal shown">
+        <div class="panel-head">
+          <div>
+            <h4>Retards prédits par analyse</h4>
+            <p>Analyses associées aux retards ML.</p>
+          </div>
+        </div>
+        <div class="chart-wrap"><div id="predictedLateAnalyseChart"></div></div>
+      </section>
+
+      <section class="panel panel-large panel-full reveal shown">
+        <div class="panel-head">
+          <div>
+            <h4>Volume / délai par analyse</h4>
+            <p>Volume d’analyses et délai moyen, affiché en jours, heures et minutes.</p>
+          </div>
+        </div>
+        <div class="chart-wrap chart-extra-tall"><div id="volumeDelayAnalyseChart"></div></div>
+      </section>
+
+      <section class="table-panel reveal shown">
+        <div class="panel-head">
+          <div>
+            <h4>Analyses détaillées</h4>
+            <p>Délai, validation, taux conformité, retards prédits et score sensibilité.</p>
+          </div>
+        </div>
+        <div class="table-shell" id="gridAnalyses"></div>
+      </section>
+    </section>
+
+    <section class="view" id="view-commercial">
+      <div class="kpi-grid kpi-grid-secondary reveal shown" id="commercialKpiGrid"></div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Devis vs factures</h4>
+              <p>Volumes mensuels.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="devisFacturesChart"></div></div>
+        </section>
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Taux transformation mensuel</h4>
+              <p>Ratio devis → facture.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="transformationRateChart"></div></div>
+        </section>
+      </div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Évolution commerciale</h4>
+              <p>Devis, factures et transformation.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="commercialTrendChart"></div></div>
+        </section>
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Devis par état</h4>
+              <p>Où le processus commercial bloque.</p>
+            </div>
+          </div>
+          <div class="chart-wrap chart-wrap-relative">
+            <div id="devisStateChart"></div>
+            <div class="pie-center-label" id="devisStateCenter"></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Top clients par devis</h4>
+              <p>Clients avec le plus d’activité commerciale.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="topClientsDevisChart"></div></div>
+        </section>
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Délai devis → facture</h4>
+              <p>Réactivité commerciale mensuelle.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="delayDevisFactureChart"></div></div>
+        </section>
+      </div>
+
+      <section class="table-panel reveal shown">
+        <div class="panel-head">
+          <div>
+            <h4>Devis</h4>
+            <p>État, facturation, délai devis → facture et référence facture.</p>
+          </div>
+        </div>
+        <div class="table-shell" id="gridDevis"></div>
+      </section>
+    </section>
+  </main>
+ <!-- ══ BOUTON RETOUR — coller juste après <body> dans chaque dashboard ══ -->
+<!-- Pour dashboard_globale/front_end/index.html et dashboard_mensuel/front_end/index.html -->
+<style>
+  .back-bar {
+    position: sticky; top: 0; z-index: 999;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 13px; font-weight: 500;
+    color: #111110;
+    text-decoration: none;
+    padding: 6px 14px;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 8px;
+    background: transparent;
+    transition: background 0.15s;
+  }
+  .back-btn:hover { background: #f5f4f0; }
+  .back-btn svg { width: 15px; height: 15px; }
+  .back-label { font-size: 13px; color: #a0a09b; }
+</style>
+
+<div class="back-bar">
+  <a class="back-btn" href="../../index.html">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+    </svg>
+    Retour au hub
+  </a>
+  <span class="back-label">Plateforme décisionnelle du laboratoire</span>
+</div>
+<!-- ════════════════════════════════════════════════════════════════════ -->
+
+  <script src="script.js"></script>
+</body>
+</html>

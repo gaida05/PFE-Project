@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de bord opérationnel du laboratoire</title>
+  <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/23.1.5/css/dx.light.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn3.devexpress.com/jslib/23.1.5/js/dx.all.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body class="dx-viewport">
+  <header class="hero-header reveal shown">
+    <div class="hero-left">
+      <span class="hero-kicker">Suivi laboratoire</span>
+      <h1>Tableau de bord opérationnel du laboratoire</h1>
+      <p>Suivi des demandes, délais, fiches paillasse, ordres d’analyses, rapports et alertes de retard.</p>
+    </div>
+    <div class="hero-right">
+      <div class="hero-pill">
+        <span>Dernière date disponible</span>
+        <strong id="lastDataDate">-</strong>
+      </div>
+      <div class="hero-pill danger">
+        <span>Alertes délai</span>
+        <strong id="heroDelayAlerts">0</strong>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="filter-shell reveal shown" id="filterShell">
+      <div class="filter-head">
+        <div class="filter-title">
+          <span class="filter-icon">⌕</span>
+          <div>
+            <h2>Barre de filtres</h2>
+            <small>Période, année, mois, badges actifs et drill-downs conservés.</small>
+          </div>
+        </div>
+        <div class="filter-actions-right">
+          <div id="btnToggleFilterBar"></div>
+        </div>
+      </div>
+      <div class="filter-body" id="filterBarContent">
+        <div class="filters-grid filter-fields-row">
+          <div class="field filter-field-item">
+            <label for="dashboardDateDebut">📅 Date début</label>
+            <div id="dashboardDateDebut"></div>
+          </div>
+          <div class="field filter-field-item">
+            <label for="dashboardDateFin">📅 Date fin</label>
+            <div id="dashboardDateFin"></div>
+          </div>
+          <div class="field filter-field-item">
+            <label for="dashboardYearFilter">🗓️ Année</label>
+            <div id="dashboardYearFilter"></div>
+          </div>
+          <div class="field filter-field-item">
+            <label for="dashboardMonthFilter">🕘 Mois</label>
+            <div id="dashboardMonthFilter"></div>
+          </div>
+        </div>
+
+        <div class="filters-footer filter-actions-row">
+          <div class="quick-actions filter-quick-actions">
+            <div id="btnDashboardToday"></div>
+            <div id="btnDashboardThisWeek"></div>
+            <div id="btnDashboardThisMonth"></div>
+            <div id="btnDashboardThisYear"></div>
+          </div>
+          <div class="main-actions filter-main-actions">
+            <div id="btnDashboardFiltrer"></div>
+            <div id="btnDashboardReset"></div>
+          </div>
+        </div>
+
+        <div class="active-badges active-filter-badges" id="activeFilterBadges"></div>
+      </div>
+    </section>
+
+    <nav class="tabs reveal shown" id="viewTabs">
+      <button class="tab-btn active" data-view="global">Vue globale</button>
+      <button class="tab-btn" data-view="demandes">Demandes d’analyse</button>
+      <button class="tab-btn" data-view="fiches">Fiches paillasse / Ordres</button>
+      <button class="tab-btn" data-view="rapports">Rapports</button>
+      <button class="tab-btn" data-view="alertes">Alertes</button>
+    </nav>
+
+    <div class="context-bar reveal shown">
+      <div class="context-title">
+        <h3 id="contextTitle">Vue globale</h3>
+        <p id="contextSubtitle">Cockpit opérationnel avec délais, affectations, fiches paillasse et alertes.</p>
+      </div>
+      <div class="context-actions">
+        <button class="mini-pill strong" id="clearDrilldownBtn">Effacer drill-down</button>
+        <button class="mini-pill" id="showCurrentFilterBtn">Aucun drill-down</button>
+      </div>
+    </div>
+
+    <section class="view active" id="view-global">
+      <div class="kpi-grid kpi-grid-main reveal shown" id="kpiGrid"></div>
+
+      <section class="urgent-strip reveal shown" id="urgentStrip"></section>
+
+      <div class="panel-grid-main">
+        <section class="panel panel-large reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Statut opérationnel des demandes</h4>
+              <p>Ouverte, en cours ou terminée selon l’activité réelle.</p>
+            </div>
+            <div class="panel-tools legend-row" id="statusLegend"></div>
+          </div>
+          <div class="chart-wrap chart-tall"><div id="statusAreaChart"></div></div>
+        </section>
+
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Conformité des échantillons</h4>
+              <p>Conformes et non conformes.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="sampleDonutChart"></div></div>
+          <div class="stat-list" id="sampleLegend"></div>
+        </section>
+      </div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Volume et délai moyen par secteur</h4>
+              <p>Lecture croisée du volume traité et du délai moyen.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="sectorBarChart"></div></div>
+        </section>
+
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Alertes par niveau de risque</h4>
+              <p>Faible, moyen, élevé et critique.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="riskAlertsChart"></div></div>
+        </section>
+      </div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Fiches paillasse par laborantin</h4>
+              <p>Affectations, fiches en cours et fiches terminées.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="fichesPaillasseLaborantinGlobalChart"></div></div>
+        </section>
+
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Évolution du délai moyen</h4>
+              <p>Variation du délai moyen sur la période.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="delayEvolutionChart"></div></div>
+        </section>
+      </div>
+
+      <section class="table-panel reveal shown">
+        <div class="panel-head">
+          <div>
+            <h4>Demandes à suivre</h4>
+            <p>Vue courte des demandes récentes ou à risque.</p>
+          </div>
+        </div>
+        <div class="table-shell" id="globalDemandesPreview"></div>
+      </section>
+    </section>
+
+    <section class="view" id="view-demandes">
+      <section class="table-panel reveal shown">
+        <div class="panel-head">
+          <div>
+            <h4>Demandes d’analyse</h4>
+            <p>Suivi opérationnel des demandes avec détails, délais et génération de rapports.</p>
+          </div>
+        </div>
+        <div class="table-shell" id="demandesTable"></div>
+      </section>
+    </section>
+
+    <section class="view" id="view-fiches">
+      <div class="kpi-grid kpi-grid-small reveal shown" id="fichesKpiGrid"></div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Fiches paillasse par laborantin</h4>
+              <p>Charge et avancement par laborantin.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="laborantinComboChart"></div></div>
+        </section>
+
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Fiches paillasse par secteur</h4>
+              <p>Répartition des fiches par secteur.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="fichesSectorComboChart"></div></div>
+        </section>
+      </div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Ordres par statut</h4>
+              <p>Non affecté, en cours, terminé ou validé.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="ordresStatusChart"></div></div>
+        </section>
+
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Délai moyen par analyse</h4>
+              <p>Analyses les plus longues.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="delayByAnalyseChart"></div></div>
+        </section>
+      </div>
+
+      <section class="table-panel reveal shown">
+        <div class="panel-head">
+          <div>
+            <h4>Fiches paillasse / Ordres d’analyses</h4>
+            <p>Liste compacte sans client, date réception ni date fin.</p>
+          </div>
+        </div>
+        <div class="table-shell" id="fichesTable"></div>
+      </section>
+    </section>
+
+    <section class="view" id="view-rapports">
+      <div class="kpi-grid kpi-grid-small reveal shown" id="rapportKpiGrid"></div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Rapports par statut</h4>
+              <p>Provisoires, finaux, livrés et en attente.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="reportsStatusChart"></div></div>
+        </section>
+
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Délai moyen de validation</h4>
+              <p>Délai de validation des rapports.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="reportValidationDelayChart"></div></div>
+        </section>
+      </div>
+
+      <div class="panel-grid-main optional-panel-row">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Rapports par secteur</h4>
+              <p>Volume de rapports par secteur.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="reportsBarChart"></div></div>
+        </section>
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Indicateurs rapides</h4>
+              <p>Synthèse courte des rapports.</p>
+            </div>
+          </div>
+          <div class="stat-list" id="reportStats"></div>
+        </section>
+      </div>
+
+      <section class="table-panel reveal shown">
+        <div class="panel-head">
+          <div>
+            <h4>Liste des rapports</h4>
+            <p>Suivi simplifié des rapports et de leur délai de livraison.</p>
+          </div>
+        </div>
+        <div class="table-shell" id="rapportsTable"></div>
+      </section>
+    </section>
+
+    <section class="view" id="view-alertes">
+      <div class="kpi-grid kpi-grid-alertes reveal shown" id="alertesKpiGrid"></div>
+
+      <div class="panel-grid-main">
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Alertes par gravité</h4>
+              <p>Critiques, élevées, moyennes et faibles.</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="alertsGravityChart"></div></div>
+        </section>
+
+        <section class="panel reveal shown">
+          <div class="panel-head">
+            <div>
+              <h4>Alertes par type</h4>
+              <p>Retard prédit, rapport manquant, résultats incomplets...</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><div id="alertsTypeChart"></div></div>
+        </section>
+      </div>
+
+      <section class="table-panel reveal shown">
+        <div class="panel-head">
+          <div>
+            <h4>Alertes opérationnelles</h4>
+            <p>Messages et actions recommandées.</p>
+          </div>
+        </div>
+        <div class="table-shell" id="alertesTable"></div>
+      </section>
+    </section>
+  </main>
+ <!-- ══ BOUTON RETOUR — coller juste après <body> dans chaque dashboard ══ -->
+<!-- Pour dashboard_globale/front_end/index.html et dashboard_mensuel/front_end/index.html -->
+<style>
+  .back-bar {
+    position: sticky; top: 0; z-index: 999;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 13px; font-weight: 500;
+    color: #111110;
+    text-decoration: none;
+    padding: 6px 14px;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 8px;
+    background: transparent;
+    transition: background 0.15s;
+  }
+  .back-btn:hover { background: #f5f4f0; }
+  .back-btn svg { width: 15px; height: 15px; }
+  .back-label { font-size: 13px; color: #a0a09b; }
+</style>
+
+<div class="back-bar">
+  <a class="back-btn" href="../../index.html">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+    </svg>
+    Retour au hub
+  </a>
+  <span class="back-label">Plateforme décisionnelle du laboratoire</span>
+</div>
+<!-- ════════════════════════════════════════════════════════════════════ -->
+
+  <script src="script.js"></script>
+</body>
+</html>
+

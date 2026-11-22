@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Prédictif — Grafana</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: #f5f4f0; }
+
+    .top-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      height: 52px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      gap: 16px;
+    }
+
+    .top-left { display: flex; align-items: center; gap: 12px; }
+
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 500;
+      color: #111110;
+      text-decoration: none;
+      padding: 6px 13px;
+      border: 1px solid rgba(0,0,0,0.15);
+      border-radius: 8px;
+      background: transparent;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .back-btn:hover { background: #f5f4f0; }
+    .back-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    .divider { width: 1px; height: 20px; background: rgba(0,0,0,0.1); }
+
+    .page-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 500; color: #111110;
+    }
+    .page-badge {
+      font-size: 11px; font-weight: 500;
+      padding: 3px 10px; border-radius: 99px;
+      background: #eeecfd; color: #5142b5;
+    }
+
+    .top-right { display: flex; align-items: center; gap: 8px; }
+
+    .open-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 500;
+      color: #6b6b67;
+      text-decoration: none;
+      padding: 5px 11px;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 7px;
+      background: transparent;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .open-btn:hover { background: #f0f0ec; color: #111110; }
+    .open-btn svg { width: 13px; height: 13px; }
+
+    .iframe-wrap {
+      position: fixed;
+      top: 52px; left: 0; right: 0; bottom: 0;
+    }
+    iframe {
+      width: 100%; height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .iframe-error {
+      display: none;
+      position: absolute;
+      inset: 0;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      background: #f5f4f0;
+      text-align: center;
+      padding: 2rem;
+    }
+    .iframe-error.visible { display: flex; }
+    .error-icon { font-size: 48px; }
+    .error-title { font-size: 18px; font-weight: 600; color: #111110; }
+    .error-desc { font-size: 14px; color: #6b6b67; max-width: 380px; line-height: 1.6; }
+    .error-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 14px; font-weight: 500;
+      color: #5142b5;
+      text-decoration: none;
+      padding: 9px 18px;
+      border: 1px solid #c4bef5;
+      border-radius: 8px;
+      background: #eeecfd;
+      transition: background 0.15s;
+    }
+    .error-link:hover { background: #e4e0fa; }
+    .error-link svg { width: 14px; height: 14px; }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="top-left">
+      <a class="back-btn" href="index.html">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+        </svg>
+        Retour au hub
+      </a>
+      <div class="divider"></div>
+      <div class="page-title">
+        Dashboard prédictif
+        <span class="page-badge">IA &amp; prédiction</span>
+      </div>
+    </div>
+    <div class="top-right">
+      <a class="open-btn" href="http://localhost:3000/d/pfe-labo-enh-v126/dashboard-predictive" target="_blank" rel="noopener">
+        Ouvrir dans Grafana
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="iframe-wrap">
+    <iframe
+      id="grafana-frame"
+      src="http://localhost:3000/d/pfe-labo-enh-v126/dashboard-predictive?kiosk"
+      title="Dashboard prédictif Grafana"
+      allowfullscreen
+    ></iframe>
+
+    <div class="iframe-error" id="error-msg">
+      <div class="error-icon">📡</div>
+      <p class="error-title">Grafana inaccessible</p>
+      <p class="error-desc">Le serveur Grafana ne répond pas sur <code>localhost:3000</code>. Vérifiez que le service est démarré.</p>
+      <a class="error-link" href="http://localhost:3000/d/pfe-labo-enh-v126/dashboard-predictive" target="_blank" rel="noopener">
+        Réessayer dans un nouvel onglet
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const frame = document.getElementById('grafana-frame');
+    const err   = document.getElementById('error-msg');
+    frame.addEventListener('error', () => { err.classList.add('visible'); });
+    setTimeout(() => {
+      try {
+        if (!frame.contentDocument && !frame.contentWindow?.location?.href) {
+          err.classList.add('visible');
+        }
+      } catch(e) { /* cross-origin: grafana loaded fine */ }
+    }, 4000);
+  </script>
+
+</body>
+</html>

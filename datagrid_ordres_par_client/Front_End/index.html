@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Laboratoire</title>
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/23.1.5/css/dx.light.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn3.devexpress.com/jslib/23.1.5/js/dx.all.js"></script>
+</head>
+<body class="dx-viewport">
+    <header class="header">
+        <h1>Analyse des ordres d'analyses par client</h1>
+    </header>
+    <main class="container">
+        <section id="charts-global">
+            <h2>Statistiques globales</h2>
+            <div id="statsSummary" class="kpi-container"></div>
+            <div class="chart-row">
+                <div id="chartConformite" class="chart-half"></div>
+                <div id="chartStatut" class="chart-half"></div>
+            </div>
+            <div class="chart-full">
+                <div id="chartOrdresParClient"></div>
+            </div>
+        </section>
+        <section id="grid-section">
+            <h2>Statistiques par client</h2>
+            <div id="gridContainer"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Laboratoire d'analyses</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
+

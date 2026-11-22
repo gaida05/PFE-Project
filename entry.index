@@ -1,0 +1,115 @@
+
+<style>
+  .hub-wrap { padding: 0; font-family: var(--font-sans); }
+  .hub-header { padding: 2rem 2rem 1.5rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .hub-eyebrow { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 6px; }
+  .hub-title { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 4px; }
+  .hub-sub { font-size: 14px; color: var(--color-text-secondary); margin: 0; }
+  .hub-stats { display: flex; gap: 12px; padding: 1.5rem 2rem 0; }
+  .hub-stat { flex: 1; background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.75rem 1rem; }
+  .hub-stat-val { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+  .hub-stat-lbl { font-size: 12px; color: var(--color-text-tertiary); margin-top: 2px; }
+  .hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; padding: 1.5rem 2rem 2rem; }
+  .hub-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; display: flex; flex-direction: column; gap: 14px; transition: border-color 0.15s; }
+  .hub-card:hover { border-color: var(--color-border-secondary); }
+  .hub-card-top { display: flex; align-items: flex-start; justify-content: space-between; }
+  .hub-icon { width: 40px; height: 40px; border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .icon-blue  { background: #E6F1FB; color: #185FA5; }
+  .icon-teal  { background: #E1F5EE; color: #0F6E56; }
+  .icon-amber { background: #FAEEDA; color: #854F0B; }
+  .hub-badge { font-size: 11px; padding: 3px 10px; border-radius: 99px; font-weight: 500; }
+  .badge-ops   { background: #E6F1FB; color: #185FA5; }
+  .badge-qual  { background: #E1F5EE; color: #0F6E56; }
+  .badge-pred  { background: #EEEDFE; color: #534AB7; }
+  .hub-card-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-tertiary); margin: 0; }
+  .hub-card-title { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin: 2px 0 0; }
+  .hub-card-desc  { font-size: 13px; color: var(--color-text-secondary); margin: 0; line-height: 1.55; }
+  .hub-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 0.5px solid var(--color-border-tertiary); margin-top: auto; }
+  .hub-card-meta { font-size: 12px; color: var(--color-text-tertiary); display: flex; align-items: center; gap: 5px; }
+  .hub-btn { font-size: 13px; font-weight: 500; padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-primary); cursor: pointer; display: flex; align-items: center; gap: 5px; text-decoration: none; }
+  .hub-btn:hover { background: var(--color-background-secondary); }
+</style>
+
+<div class="hub-wrap">
+  <div class="hub-header">
+    <p class="hub-eyebrow">Plateforme décisionnelle</p>
+    <h1 class="hub-title">Tableau de bord du laboratoire</h1>
+    <p class="hub-sub">Opérations, qualité et prédictions — pilotez votre activité en un coup d'œil.</p>
+  </div>
+
+  <div class="hub-stats">
+    <div class="hub-stat">
+      <div class="hub-stat-val">3</div>
+      <div class="hub-stat-lbl">Dashboards actifs</div>
+    </div>
+    <div class="hub-stat">
+      <div class="hub-stat-val" id="now-time">—</div>
+      <div class="hub-stat-lbl">Heure actuelle</div>
+    </div>
+    <div class="hub-stat">
+      <div class="hub-stat-val" id="now-date">—</div>
+      <div class="hub-stat-lbl">Date du jour</div>
+    </div>
+  </div>
+
+  <div class="hub-grid">
+
+    <div class="hub-card">
+      <div class="hub-card-top">
+        <div class="hub-icon icon-blue"><i class="ti ti-settings-2" aria-hidden="true"></i></div>
+        <span class="hub-badge badge-ops">Opérationnel</span>
+      </div>
+      <div>
+        <p class="hub-card-label">Suivi des activités</p>
+        <p class="hub-card-title">Dashboard opérationnel</p>
+        <p class="hub-card-desc">Pilotage en temps réel des flux d'analyses, des demandes en cours et des ressources du laboratoire.</p>
+      </div>
+      <div class="hub-card-footer">
+        <span class="hub-card-meta"><i class="ti ti-clock" aria-hidden="true"></i> Temps réel</span>
+        <a class="hub-btn" href="/dashboard_operationnel/index.php">Ouvrir <i class="ti ti-arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </div>
+
+    <div class="hub-card">
+      <div class="hub-card-top">
+        <div class="hub-icon icon-teal"><i class="ti ti-rosette" aria-hidden="true"></i></div>
+        <span class="hub-badge badge-qual">Performance & qualité</span>
+      </div>
+      <div>
+        <p class="hub-card-label">Indicateurs clés</p>
+        <p class="hub-card-title">Dashboard performance & qualité</p>
+        <p class="hub-card-desc">Suivi des KPIs, taux de conformité, délais de rendu et indicateurs qualité du laboratoire.</p>
+      </div>
+      <div class="hub-card-footer">
+        <span class="hub-card-meta"><i class="ti ti-chart-bar" aria-hidden="true"></i> KPIs & conformité</span>
+        <a class="hub-btn" href="dashboards/dashboard_performance/index.php">Ouvrir <i class="ti ti-arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </div>
+
+    <div class="hub-card">
+      <div class="hub-card-top">
+        <div class="hub-icon" style="background:#EEEDFE;color:#534AB7;width:40px;height:40px;border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center;font-size:20px;"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
+        <span class="hub-badge badge-pred">IA & prédiction</span>
+      </div>
+      <div>
+        <p class="hub-card-label">Analyse avancée</p>
+        <p class="hub-card-title">Dashboard prédictif</p>
+        <p class="hub-card-desc">Anticipez les tendances, la charge d'activité et les risques qualité grâce aux modèles prédictifs.</p>
+      </div>
+      <div class="hub-card-footer">
+        <span class="hub-card-meta"><i class="ti ti-cpu" aria-hidden="true"></i> Modèles prédictifs</span>
+        <a class="hub-btn" href="dashboards/dashboard_predictif/index.php">Ouvrir <i class="ti ti-arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function tick(){
+    const now = new Date();
+    document.getElementById('now-time').textContent = pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+    document.getElementById('now-date').textContent = now.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
+  }
+  tick(); setInterval(tick,1000);
+</script>
